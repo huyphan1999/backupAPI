@@ -47,8 +47,6 @@ $app->withEloquent();
 // Load additional config files
 // jwt
 $app->configure('jwt');
-// mail
-$app->configure('mail');
 
 // repository
 $app->configure('repository');
@@ -64,17 +62,6 @@ $app->configure('queue');
 // App
 $app->configure('app');
 
-//DOMPDF
-$app->configure('dompdf');
-
-//Captcha
-$app->configure('captcha');
-
-//Firebase
-$app->configure('firebase');
-
-//Firebase
-$app->configure('facebook');
 
 //Timezone
 date_default_timezone_set('Asia/Ho_Chi_Minh');
@@ -158,13 +145,6 @@ $app->register(App\Providers\CustomizeServiceProvider::class);
 // Queue MongoDB
 $app->register(Moloquent\MongodbQueueServiceProvider::class);
 
-// Mail Service
-$app->register(Illuminate\Mail\MailServiceProvider::class);
-$app->withFacades();
-
-
-//DOMPDF
-$app->register(Barryvdh\DomPDF\ServiceProvider::class);
 
 app('Dingo\Api\Auth\Auth')->extend('jwt', function ($app) {
     return new Dingo\Api\Auth\Provider\JWT($app['Tymon\JWTAuth\JWTAuth']);
@@ -174,19 +154,6 @@ app('Dingo\Api\Auth\Auth')->extend('jwt', function ($app) {
 $app->singleton(Illuminate\Auth\AuthManager::class, function ($app) {
     return $app->make('auth');
 });
-
-//Soicalite for facebook, google login.
-$app->register(Laravel\Socialite\SocialiteServiceProvider::class);
-
-//Image Intervention 
-//$app->register(Intervention\Image\ImageServiceProvider::class);
-$app->register(Intervention\Image\ImageServiceProviderLumen::class);
-
-// Maatwebsite Excel
-$app->register(Maatwebsite\Excel\ExcelServiceProvider::class);
-
-//Captcha
-$app->register(Yangbx\CaptchaLumen\CaptchaServiceProvider::class);
 
 
 //Database Table

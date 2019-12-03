@@ -9,7 +9,6 @@ use App\Api\Entities\Shop;
 use App\Api\Validators\ShopValidator;
 use App\Api\Criteria\ShopCriteria;
 
-use App\Api\Entities\PaymentOrder;
 use App\Api\Entities\Role;
 use Carbon\Carbon;
 /**
@@ -49,28 +48,6 @@ class ShopRepositoryEloquent extends BaseRepository implements ShopRepository
         }
         $this->popCriteria(new ShopCriteria($params));
         return $item;
-    }
-
-    /**
-    * Make Plan for shop.
-    *
-    **/
-    public function makePackage(Shop $shop, PaymentOrder $order) {
-        $start_package = Carbon::parse(Carbon::now()->toDateString());
-        $end_package = (Clone $start_package)->addMonths($order->month);
-        $arrOrder = $order->toArray();
-        $package = $arrOrder['package'];
-        $package['order_id'] = mongo_id($order->_id);
-        $shop->start_package = $start_package;
-        $shop->end_package = $end_package;
-        $shop->package = $package;
-
-        // Set thêm thông tin thanh toán
-        if(!empty($order->billing_info)) {
-            $shop->billing_info = $order->billing_info;
-        }
-        $shop->save();
-        return true;
     }
 
 }
