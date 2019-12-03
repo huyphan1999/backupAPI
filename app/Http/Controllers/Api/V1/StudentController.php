@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Laravel\Lumen\Http\Redirector;
+use DB;
 
 class StudentController extends Controller
 {
@@ -45,12 +46,13 @@ class StudentController extends Controller
      * @return View
      */
     public function viewList() {
-//        $students = $this->studentRepository->paginate();
-        $students = Student::all();
-        $viewData = [
-            'students' => $students
-        ];
-        return view('student-list', $viewData);
+////        $students = $this->studentRepository->paginate();
+//        $students = Student::all();
+//        $viewData = [
+//            'students' => $students
+//        ];
+//        return view('student-list', $viewData);
+        dd(DB::connection()->getPdo());
     }
 
     /**

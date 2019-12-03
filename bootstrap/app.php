@@ -39,7 +39,7 @@ config([
 $app->withFacades();
 //mail
 // class_alias('Jenssegers\Mongodb\Eloquent\Model', 'mail');
- $app->withEloquent();
+// $app->withEloquent();
 
 $app->register('Moloquent\MongodbServiceProvider');
 $app->withEloquent();
