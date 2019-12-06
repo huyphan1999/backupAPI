@@ -3,12 +3,12 @@
 namespace App\Api\Transformers;
 
 use League\Fractal\TransformerAbstract;
-use App\Api\Entities\Dep;
+use App\Api\Entities\Branch;
 
 /**
  * Class BranchTransformer
  */
-class DepTransformer extends TransformerAbstract
+class BranchTransformer extends TransformerAbstract
 {
 
     /**
@@ -17,9 +17,10 @@ class DepTransformer extends TransformerAbstract
      *
      * @return array
      */
-    public function transform(Dep $model, string $type = ''){
+    public function transform(Branch $model, string $type = ''){
         $data = [
-            'depName' => $model->depName,
+            'branchName' => $model->branchName,
+            'address' => $model->address,
         ];
         return $data;
     }
