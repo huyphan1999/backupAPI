@@ -16,7 +16,11 @@
         "illuminate/redis": "^5.2",
         "prettus/l5-repository": "^2.6.6",
         "sentry/sentry-laravel": "^0.4.1",
+<<<<<<< HEAD
         "mongodb/mongodb": "^1.5.0",
+=======
+        "mongodb/mongodb": "^1.5",
+>>>>>>> origin/BranchDevelop
         "moloquent/moloquent": "dev-master"
     },
     "require-dev": {

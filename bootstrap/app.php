@@ -38,8 +38,13 @@ config([
 // phpunit
 $app->withFacades();
 //mail
+<<<<<<< HEAD
 //class_alias('Jenssegers\Mongodb\Eloquent\Model', 'mail');
  //$app->withEloquent();
+=======
+// class_alias('Jenssegers\Mongodb\Eloquent\Model', 'mail');
+// $app->withEloquent();
+>>>>>>> origin/BranchDevelop
 
 $app->register('Moloquent\MongodbServiceProvider');
 $app->withEloquent();
