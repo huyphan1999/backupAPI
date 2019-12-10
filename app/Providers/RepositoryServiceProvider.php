@@ -14,7 +14,9 @@ class RepositoryServiceProvider extends ServiceProvider
             'Role',
             'Student',
             'Branch',
-            'Dep'
+            'Dep',
+            'Shift',
+            'Empshift'
         );
 
         foreach ($models as $model) {

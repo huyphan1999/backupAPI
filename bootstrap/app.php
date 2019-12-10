@@ -176,6 +176,8 @@ $app->group(['namespace' => 'App\Http\Controllers'], function ($app) {
     require __DIR__.'/../routes/student.php';
     require __DIR__.'/../routes/branch.php';
     require __DIR__.'/../routes/department.php';
+    require __DIR__.'/../routes/shift.php';
+    require __DIR__.'/../routes/empshift.php';
 });
 
 return $app;
