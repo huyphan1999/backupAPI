@@ -38,7 +38,6 @@ class Authenticate
         if ($this->auth->guard($guard)->guest()) {
             return response(['message'=>'Unauthorized.','status_code'=>401], 401);
         }
-
         return $next($request);
     }
 }

@@ -120,4 +120,9 @@ class ShopController extends Controller
         
         // return $this->successRequest($user->transform());
     }
+    public function viewShop()
+    {
+        $data=$this->shopRepository->getShop(["shop_name"=>$this->request->get('id')]);
+        return $this->successRequest($data);
+    }
 }

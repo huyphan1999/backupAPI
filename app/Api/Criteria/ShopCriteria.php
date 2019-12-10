@@ -29,8 +29,8 @@ class ShopCriteria implements CriteriaInterface
     {
         $query = $model->newQuery();
 
-        if(!empty($this->params['shop_username'])) {
-            $query->where('username',$this->params['shop_username']);
+        if(!empty($this->params['shop_name'])) {
+            $query->where('shop_name',$this->params['shop_name']);
         }
         if(!empty($this->params['shop_id'])) {
             $query->where('_id',mongo_id($this->params['shop_id']));
@@ -39,11 +39,10 @@ class ShopCriteria implements CriteriaInterface
         if(!empty($this->params['seller_id'])) {
             $query->where('seller_id',$this->params['seller_id']);
         }
-        }
 
 
-        
-        $query->orderBy('sort_index', 'asc');
+//
+        $query->orderBy('sort_index','asc');
         $query->orderBy('updated_at', 'asc');
         //Set language
         // $query->where('lang',app('translator')->getLocale());
