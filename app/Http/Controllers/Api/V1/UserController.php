@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Api\Entities\User;
-
+use App\Api\Entities\Shop;
+use App\Api\Entities\Position;
 use App\Api\Repositories\Contracts\UserRepository;
 use App\Api\Repositories\Contracts\ShopRepository;
+use App\Api\Repositories\Contracts\PositionRepository;
 
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
@@ -42,6 +44,47 @@ class UserController extends Controller
         parent::__construct();
     }
 
+    public function createUser()
+    {
+        $validator = \Validator::make($this->request->all(), [
+            'name' => 'required',
+            'email' => 'email|required|max:255',
+            'password' => 'required|min:8',
+            'position'=>'required',
+            'is_root'=>'is_root',
+        ]);
+        $position=$this->request->get('position');
+        $email = strtolower($this->request->get('email'));
+        $password = $this->request->get('password');
+        // Kiểm tra xem email đã được đăng ký trước đó chưa
+        $userCheck = User::where(['email' => $email])->first();
+        if(!empty($userCheck)) {
+            return $this->errorBadRequest(trans('user.email_exists'));
+        }
+        //Lấy shop và position để thêm user vào
+        $shop = Shop::where(['email' => $email])->first();
+        if(!empty($shop))
+        {
+            return $this->errorBadRequest(trans('user.email_exists'));
+        }
+        $position=Position::where(['position'=>$position])->first();
+        if(!empty($position))
+        {
+            return $this->errorBadRequest(trans('user.email_exists'));
+        }
+        $userAttributes = [
+            'name' => $this->request->get('name'),
+            'full_name'=>$this->request->get('full_name'),
+            'email' => $email,
+            'password' => app('hash')->make($password),
+            'is_web' => (int)($this->request->get('is_web')),
+            'shop_id' => mongo_id($shop->_id),
+            'position_id'=>mongo_id($position->_id),
+            'is_root' => $this->request->get('is_root'),
+        ];
+        $user = $this->userRepository->create($userAttributes);
+        return $this->successRequest($user->transform());
+    }
     /**
      * @api {get} /user 1. Current user info
      * @apiDescription (current user info)

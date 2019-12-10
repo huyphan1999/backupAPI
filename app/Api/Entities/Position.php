@@ -10,9 +10,9 @@ class Position extends Moloquent
 {
 	use SoftDeletes;
 
-	protected $collection = '';
+	protected $collection = 'positions';
 
-    protected $fillable = [];
+    protected $guarded = array();
 
     protected $hidden = ['created_at','updated_at','deleted_at'];
 

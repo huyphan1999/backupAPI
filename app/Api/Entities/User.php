@@ -15,7 +15,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use App\Api\Entities\Organization;
 use Illuminate\Support\Facades\Auth;
 use App\Api\Entities\Shop;
-
+use App\Api\Entities\Position;
 class User extends Moloquent implements AuthenticatableContract, JWTSubject
 {
     use Authenticatable, GmaUserTrait, SoftDeletes;
@@ -74,5 +74,13 @@ class User extends Moloquent implements AuthenticatableContract, JWTSubject
             $shop = Shop::where(['_id' => mongo_id($this->shop_id)])->first();
         }
         return $shop;
+    }
+    public function position()
+    {
+        $position=null;
+        if(!empty($this->position_id)) {
+            $position = Position::where(['_id' => mongo_id($this->position_id)])->first();
+        }
+        return $position;
     }
 }

@@ -2,9 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6f03bd38-5f60-4da1-815a-cbcfbea1f4ed" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/PositionController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/routes/position.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Api/Entities/Position.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Api/Entities/Position.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Api/Entities/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Api/Entities/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Api/Transformers/PositionTransformer.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Api/Transformers/PositionTransformer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Api/Transformers/UserTransformer.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Api/Transformers/UserTransformer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/ShopController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/ShopController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/UserController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Providers/RepositoryServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/RepositoryServiceProvider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bootstrap/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/bootstrap/app.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/user.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/user.php" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -125,6 +137,11 @@
     </include_path>
   </component>
   <component name="ProjectId" id="1UTTTdCVEipafRGOFdTOa8CReUi" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -135,23 +152,23 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
-  </component>
   <component name="RunManager">
     <configuration name="phpunit.xml" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
       <TestRunner scope="XML" />
       <method v="2" />
     </configuration>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -167,6 +184,10 @@
       <workItem from="1575391695694" duration="3847000" />
       <workItem from="1575423430737" duration="20176000" />
       <workItem from="1575551171042" duration="102000" />
+      <workItem from="1575945580390" duration="645000" />
+      <workItem from="1575946442686" duration="17000" />
+      <workItem from="1575946528204" duration="475000" />
+      <workItem from="1575947063418" duration="4241000" />
     </task>
     <servers />
   </component>
@@ -185,5 +206,27 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="540" y="254" key="IDE.errors.dialog" timestamp="1575947767743">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="540" y="254" key="IDE.errors.dialog/0.0.1920.1040@0.0.1920.1040" timestamp="1575947767743" />
+    <state x="736" y="334" key="NewPhpClassDialog" timestamp="1575948589747">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="736" y="334" key="NewPhpClassDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1575948589747" />
+    <state x="794" y="443" key="NewPhpFileDialog" timestamp="1575947660282">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="794" y="443" key="NewPhpFileDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1575947660282" />
+    <state x="656" y="343" key="com.intellij.ide.util.TipDialog" timestamp="1575947069051">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="656" y="343" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1575947069051" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1575950097750">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1575950097750" />
   </component>
 </project>

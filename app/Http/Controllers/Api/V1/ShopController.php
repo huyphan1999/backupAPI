@@ -87,6 +87,7 @@ class ShopController extends Controller
         // Tạo shop trước
         $attributes = [
             'name' => $this->request->get('name'),
+            'shop_name'=>$this->request->get('shop_name'),
             'email' => $email,
             'is_web' => (int)($this->request->get('is_web'))
         ];
@@ -95,6 +96,7 @@ class ShopController extends Controller
         // Sau đó tạo user
         $userAttributes = [
             'name' => $this->request->get('name'),
+            'full_name'=>$this->request->get('full_name'),
             'email' => $email,
             'password' => app('hash')->make($password),
             'is_web' => (int)($this->request->get('is_web')),

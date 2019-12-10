@@ -46,11 +46,17 @@ class UserTransformer extends TransformerAbstract
             'email' => $model->email,
             'is_root' => (int)$model->is_root,
             'shop_id' => mongo_id_string($model->shop_id),
+            'position_id'=>mongo_id_string($model->position_id),
             'shop' => [],
+            'position'=>[],
         );
         $shop = $model->shop();
+        $position= $model->position();
         if(!empty($shop)) {
             $data['shop'] = $shop->transform();
+        }
+        if(!empty($shop)) {
+            $data['position'] = $position->transform();
         }
         return $data;
     }

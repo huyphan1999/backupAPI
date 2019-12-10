@@ -38,13 +38,11 @@ config([
 // phpunit
 $app->withFacades();
 //mail
-<<<<<<< HEAD
+
 //class_alias('Jenssegers\Mongodb\Eloquent\Model', 'mail');
  //$app->withEloquent();
-=======
 // class_alias('Jenssegers\Mongodb\Eloquent\Model', 'mail');
 // $app->withEloquent();
->>>>>>> origin/BranchDevelop
 
 $app->register('Moloquent\MongodbServiceProvider');
 $app->withEloquent();
@@ -181,6 +179,7 @@ $app->group(['namespace' => 'App\Http\Controllers'], function ($app) {
     require __DIR__.'/../routes/student.php';
     require __DIR__.'/../routes/branch.php';
     require __DIR__.'/../routes/department.php';
+    require __DIR__.'/../routes/position.php';
 });
 
 return $app;
