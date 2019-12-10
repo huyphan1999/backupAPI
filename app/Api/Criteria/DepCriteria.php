@@ -27,12 +27,19 @@ class DepCriteria implements CriteriaInterface
     public function apply($model, RepositoryInterface $repository)
     {
         $query = $model->newQuery();
-
+        if(!empty($this->params['depName'])) {
+            $query->where('depName',$this->params['depName']);
+        }
         //Set language
         // $query->where('lang',app('translator')->getLocale());
 
-        $query->where('shop_id',mongo_id(Auth::getPayload()->get('shop_id')));
-        
+
+
+
+        $query->orderBy('sort_index','asc');
+        $query->orderBy('updated_at', 'asc');
+
+
         return $query;
     }
 }

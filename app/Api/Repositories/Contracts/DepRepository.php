@@ -9,5 +9,5 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface DepRepository extends RepositoryInterface
 {
-    
+    public function getDep($params = [],$limit = 0);
 }

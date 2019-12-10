@@ -29,6 +29,9 @@ class ShopCriteria implements CriteriaInterface
     {
         $query = $model->newQuery();
 
+        if(!empty($this->params['name'])) {
+            $query->where('name',$this->params['name']);
+        }
         if(!empty($this->params['shop_username'])) {
             $query->where('username',$this->params['shop_username']);
         }
@@ -39,7 +42,7 @@ class ShopCriteria implements CriteriaInterface
         if(!empty($this->params['seller_id'])) {
             $query->where('seller_id',$this->params['seller_id']);
         }
-        }
+
 
 
         

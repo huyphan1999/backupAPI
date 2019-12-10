@@ -24,6 +24,10 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
             'as' => 'shop.register',
             'uses' => 'ShopController@registerShop',
         ]);
+        $api->post('shop/view', [
+            'as' => 'shop.view',
+            'uses' => 'ShopController@viewShop',
+        ]);
     });
         
 

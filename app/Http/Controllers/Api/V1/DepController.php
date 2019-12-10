@@ -177,7 +177,7 @@ class DepController extends Controller
     public function viewDep()
     {
         // Validate Data import.
-        $validator = \Validator::make($this->request->all(), [
+        /*$validator = \Validator::make($this->request->all(), [
             'branchname'=>'required',
         ]);
         if ($validator->fails()) {
@@ -198,6 +198,9 @@ class DepController extends Controller
 
 
 
+        return $this->successRequest($dep);*/
+
+        $dep=$this->depRepository->getDep(["depName"=>$this->request->get('id')]);
         return $this->successRequest($dep);
 
         // return $this->successRequest($user->transform());
