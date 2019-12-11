@@ -4,6 +4,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Api\Repositories\Contracts\PositionRepository;
+use App\Api\Repositories\Contracts\ShopRepository;
 
 
 use App\Http\Controllers\Controller;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Auth\AuthManager;
 use Gma\Curl;
 use App\Api\Entities\Position;
+use App\Api\Entities\Shop;
 //Google firebase
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
@@ -24,24 +26,38 @@ use Symfony\Component\Yaml\Tests\B;
 class PositionController extends Controller
 {
     protected $positionRepository;
+    protected $shopRepository;
     protected $request;
-    public function __construct(Request $request,PositionRepository $positionRepository)
+    public function __construct(Request $request,PositionRepository $positionRepository,ShopRepository $shopRepository)
     {
         $this->request = $request;
         $this->positionRepository = $positionRepository;
+        $this->shopRepository=$shopRepository;
         parent::__construct();
     }
     public function createPosition()
     {
         $validator= $validator = \Validator::make($this->request->all(), [
-            'position' => 'required',
+            'position_name' => 'required',
+            'shop_id'=>'required',
             'permission'=>'required',
         ]);
         if ($validator->fails()) {
             return $this->errorBadRequest($validator->messages()->toArray());
         }
+        $shop = Shop::where(['_id' => mongo_id($this->request->get('shop_id'))])->first();
+        $positioncheck=Position::where(['position_name'=>strtolower($this->request->get('position_name'))])->first();
+        if(empty($shop))
+        {
+            return $this->errorBadRequest(trans('Chưa có Shop'));
+        }
+        else{
+            if(!empty($positioncheck))
+                return $this->errorBadRequest('Trùng position');
+        }
         $attribute=[
-            'position'=>$this->request->get('position'),
+            'shop_id'=>mongo_id($shop->_id),
+            'position_name'=>$this->request->get('position_name'),
             'permission'=>$this->request->get('permission'),
         ];
         $position=$this->positionRepository->create($attribute);

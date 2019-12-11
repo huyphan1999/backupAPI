@@ -5,8 +5,8 @@ $api = app('Dingo\Api\Routing\Router');
 $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($api) {
     $api->group(['middleware' => ['api.locale']], function ($api) {
         //Login
-        $api->post('position/create', [
-            'as' => 'position.create',
+        $api->post('position/register', [
+            'as' => 'position.register',
             'uses' => 'PositionController@createPosition',
         ]);
     });

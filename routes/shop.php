@@ -24,9 +24,21 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
             'as' => 'shop.register',
             'uses' => 'ShopController@registerShop',
         ]);
+        $api->get('shop/edit', [
+            'as' => 'shop.edit_get',
+            'uses' => 'ShopController@editShop',
+        ]);
+        $api->post('shop/edit', [
+            'as' => 'shop.edit_post',
+            'uses' => 'ShopController@editShop',
+        ]);
         $api->get('shop/list', [
             'as' => 'shop.list',
             'uses' => 'ShopController@viewShop',
+        ]);
+        $api->get('shop/delete', [
+            'as' => 'shop.delete',
+            'uses' => 'ShopController@deleteShop',
         ]);
     });
         

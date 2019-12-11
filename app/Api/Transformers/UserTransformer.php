@@ -43,20 +43,33 @@ class UserTransformer extends TransformerAbstract
         $data = array(
             'id' => $model->_id,
             'name' => $model->name,
+            'full_name'=>$model->full_name,
             'email' => $model->email,
             'is_root' => (int)$model->is_root,
             'shop_id' => mongo_id_string($model->shop_id),
             'position_id'=>mongo_id_string($model->position_id),
+            'branch_id'=>mongo_id_string($model->branch_id),
+            'dep_id'=>mongo_id_string($model->dep_id),
             'shop' => [],
             'position'=>[],
+            'branch'=>[],
+            'dep'=>[],
         );
         $shop = $model->shop();
         $position= $model->position();
+        $branch=$model->branch();
+        $dep=$model->dep();
         if(!empty($shop)) {
             $data['shop'] = $shop->transform();
         }
-        if(!empty($shop)) {
+        if(!empty($position)) {
             $data['position'] = $position->transform();
+        }
+        if(!empty($branch)) {
+            $data['branch'] = $position->transform();
+        }
+        if(!empty($dep)) {
+            $data['dep'] = $position->transform();
         }
         return $data;
     }

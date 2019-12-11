@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api\V1;
 use App\Api\Entities\User;
 use App\Api\Entities\Shop;
 use App\Api\Entities\Position;
+use App\Api\Entities\Dep;
+use App\Api\Entities\Branch;
 use App\Api\Repositories\Contracts\UserRepository;
 use App\Api\Repositories\Contracts\ShopRepository;
 use App\Api\Repositories\Contracts\PositionRepository;
@@ -47,10 +49,12 @@ class UserController extends Controller
     public function createUser()
     {
         $validator = \Validator::make($this->request->all(), [
-            'name' => 'required',
+            'shop_id' => 'required',
             'email' => 'email|required|max:255',
             'password' => 'required|min:8',
-            'position'=>'required',
+            'position_id'=>'required',
+            'dep_id'=>'required',
+            'branch_id'=>'required',
             'is_root'=>'is_root',
         ]);
         $position=$this->request->get('position');
@@ -62,15 +66,25 @@ class UserController extends Controller
             return $this->errorBadRequest(trans('user.email_exists'));
         }
         //Lấy shop và position để thêm user vào
-        $shop = Shop::where(['email' => $email])->first();
-        if(!empty($shop))
+        $shop = Shop::where(['_id' => mongo_id($this->request->get('shop_id'))])->first();
+        if(empty($shop))
         {
-            return $this->errorBadRequest(trans('user.email_exists'));
+            return $this->errorBadRequest(trans('Chưa có Shop'));
         }
-        $position=Position::where(['position'=>$position])->first();
-        if(!empty($position))
+        $position = Position::where(['_id' => mongo_id($this->request->get('position_id'))])->first();
+        if(empty($position))
         {
-            return $this->errorBadRequest(trans('user.email_exists'));
+            return $this->errorBadRequest(trans('Chưa có vị trí'));
+        }
+        $dep = Dep::where(['_id' => mongo_id($this->request->get('dep_id'))])->first();
+        if(empty($dep))
+        {
+            return $this->errorBadRequest(trans('Chưa có phòng ban'));
+        }
+        $branch = Branch::where(['_id' => mongo_id($this->request->get('branch_id'))])->first();
+        if(empty($branch))
+        {
+            return $this->errorBadRequest(trans('Chưa có chi nhánh'));
         }
         $userAttributes = [
             'name' => $this->request->get('name'),
@@ -80,6 +94,8 @@ class UserController extends Controller
             'is_web' => (int)($this->request->get('is_web')),
             'shop_id' => mongo_id($shop->_id),
             'position_id'=>mongo_id($position->_id),
+            'branch_id'=>mongo_id($branch->_id),
+            'dep_id'=>mongo_id($dep->_id),
             'is_root' => $this->request->get('is_root'),
         ];
         $user = $this->userRepository->create($userAttributes);

@@ -3,10 +3,15 @@
   <component name="ChangeListManager">
     <list default="true" id="6f03bd38-5f60-4da1-815a-cbcfbea1f4ed" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Api/Criteria/ShopCriteria.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Api/Criteria/ShopCriteria.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Api/Entities/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Api/Entities/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Api/Transformers/PositionTransformer.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Api/Transformers/PositionTransformer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Api/Transformers/UserTransformer.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Api/Transformers/UserTransformer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/PositionController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/PositionController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/ShopController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/ShopController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/Authenticate.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/Authenticate.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/UserController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/position.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/position.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/shop.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/shop.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/user.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/user.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -192,7 +197,8 @@
       <workItem from="1575946442686" duration="17000" />
       <workItem from="1575946528204" duration="475000" />
       <workItem from="1575947063418" duration="9502000" />
-      <workItem from="1575959137144" duration="945000" />
+      <workItem from="1575959137144" duration="1575000" />
+      <workItem from="1576051096131" duration="14196000" />
     </task>
     <servers />
   </component>
@@ -285,13 +291,13 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="794" y="443" key="NewPhpFileDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1575947660282" />
-    <state x="656" y="343" key="com.intellij.ide.util.TipDialog" timestamp="1575959153558">
+    <state x="656" y="343" key="com.intellij.ide.util.TipDialog" timestamp="1576051129431">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="656" y="343" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1575959153558" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1575950097750">
+    <state x="656" y="343" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1576051129431" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1576071013069">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1575950097750" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1576071013069" />
   </component>
 </project>

@@ -101,6 +101,9 @@ class ShopController extends Controller
             'password' => app('hash')->make($password),
             'is_web' => (int)($this->request->get('is_web')),
             'shop_id' => mongo_id($shop->_id),
+            'position_id'=>null,
+            'branch_id'=>null,
+            'dep_id'=>null,
             'is_root' => 1,
         ];
         $user = $this->userRepository->create($userAttributes);
@@ -124,5 +127,37 @@ class ShopController extends Controller
     {
         $data=$this->shopRepository->getShop(["shop_name"=>$this->request->get('id')]);
         return $this->successRequest($data);
+    }
+    public function editShop()
+    {
+        $id=$this->request->get('id');
+        $shop=$this->shopRepository->find($id);
+        if($this->request->method('POST'))
+        {
+            $email = strtolower($this->request->get('email'));
+            $shopAttributes = [
+                'name' => $shop->_id,
+                'shop_name'=>$this->request->get('shop_name'),
+                'email' => $email,
+                'is_web' => (int)($this->request->get('is_web'))
+            ];
+
+            $data=$this->shopRepository->update($shopAttributes,$id);
+            return $this->successRequest($data);
+        }
+        return $this->successRequest($shop);
+    }
+    public function deleteShop()
+    {
+        $id=$this->request->get('id');
+
+        $user=$this->userRepository->findByField('shop_id',mongo_id($id));
+        $shop=$this->shopRepository->find($id);
+        foreach($user as $row)
+        {
+            $data=$this->userRepository->delete($row->_id);
+        }
+        $data=$this->shopRepository->delete($shop->_id);
+        return $this->successRequest('Xóa thành công');
     }
 }

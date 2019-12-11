@@ -74,12 +74,12 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
                 'as' => 'user.companyField',
                 'uses' => 'UserController@companyField',
             ]);
-            //Create User
-            $api->post('user/create',[
-                'as'=>'user.create',
-                'uses'=>'UserController@createUser'
-            ]);
         });
+        //Create User
+        $api->post('user/create',[
+            'as'=>'user.create',
+            'uses'=>'UserController@createUser'
+        ]);
     });
         
 
