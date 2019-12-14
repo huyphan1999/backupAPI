@@ -9,5 +9,5 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface BranchRepository extends RepositoryInterface
 {
-    
+//    public function deleteBranch($id,$limit =0);
 }

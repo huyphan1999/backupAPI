@@ -71,19 +71,19 @@ class BranchController extends Controller
     {
         // Validate Data import.
         $validator = \Validator::make($this->request->all(), [
-            'name'=>'required',
-            'branchName' => 'required',
+            'shop_name'=>'required',
+            'branch_name' => 'required',
             'address'=> 'required'
         ]);
         if ($validator->fails()) {
             return $this->errorBadRequest($validator->messages()->toArray());
         }
 
-        $name = $this->request->get('name');
-        $branchname=$this->request->get('branchName');
+        $shop_name = $this->request->get('shop_name');
+        $branchname=$this->request->get('branch_name');
         // Kiểm tra xem email đã được đăng ký trước đó chưa
-        $shopCheck = Shop::where(['name' => $name])->first();
-        $branchCheck=Branch::where(['branchName'=>$branchname])->first();
+        $shopCheck = Shop::where(['name' => $shop_name])->first();
+        $branchCheck=Branch::where(['branch_name'=>$branchname])->first();
         if(empty($shopCheck)) {
             return $this->errorBadRequest(trans('Công ty chưa đăng ký'));
         }
@@ -95,7 +95,7 @@ class BranchController extends Controller
 
         // Tạo shop trước
         $attributes = [
-            'branchName' => $this->request->get('branchName'),
+            'branch_name' => $this->request->get('branch_name'),
             'address' => $this->request->get('address'),
             'is_web' => (int)($this->request->get('is_web')),
             'shop_id'=>mongo_id($shopCheck->_id),

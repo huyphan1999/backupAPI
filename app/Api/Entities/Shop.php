@@ -66,5 +66,13 @@ class Shop extends Moloquent
             return [];
         }
     }
-
+    public function user()
+    {
+        $user=User::where(['_id'=>$this->_id])->first();
+        if(!empty($user)) {
+            return $user->transform();
+        } else {
+            return [];
+        }
+    }
 }

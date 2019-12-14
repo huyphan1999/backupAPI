@@ -109,6 +109,7 @@ $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
     'api.admin' => App\Http\Middleware\AdminMiddleware::class,
     'api.locale' => App\Http\Middleware\UserLocale::class,
+    'manager.role' => App\Http\Middleware\ManagerRole::class,
 ]);
 
 /*

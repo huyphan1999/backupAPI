@@ -81,19 +81,28 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return $this->errorBadRequest($validator->messages()->toArray());
         }
+// b1: ktra shop ton tai khong
 
-        $credentials = $this->request->only('email', 'password');
+        // b2: kiem tra user co ton tai khong
+        // b3:kiem tra user co thuoc shop nay khong
 
-        $credentials['email'] = strtolower($credentials['email']);
-        if (!$token = $this->auth->attempt($credentials)) {
-            return $this->errorUnauthorized([trans('auth.incorrect')]);
+//        $credentials = $this->request->only('email', 'password');
+//
+//        $credentials['email'] = strtolower($credentials['email']);
+//        if (!$token = $this->auth->attempt($credentials)) {
+//            return $this->errorUnauthorized([trans('auth.incorrect')]);
+//        }
+//
+//        $data = array('token' => $token);
+//
+//        $this->auth->setToken($token);
+//        $user = $this->auth->user();
+          $user = $this->userRepository->findByField('email', $this->request->get('email'))->first();
+        if(!empty($user))
+        {
+            $token = $this->auth->fromUser($user);
+            return $this->successRequest($token);
         }
-
-        $data = array('token' => $token);
-
-        $this->auth->setToken($token);
-        $user = $this->auth->user();
-
         return $this->successRequest($data);
     }
 }

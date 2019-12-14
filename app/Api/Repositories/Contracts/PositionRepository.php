@@ -9,5 +9,5 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface PositionRepository extends RepositoryInterface
 {
-    
+//    public function deletePosition($id,$limit =0);
 }

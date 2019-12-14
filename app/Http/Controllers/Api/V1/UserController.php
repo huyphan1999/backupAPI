@@ -51,7 +51,6 @@ class UserController extends Controller
         $validator = \Validator::make($this->request->all(), [
             'shop_id' => 'required',
             'email' => 'email|required|max:255',
-            'password' => 'required|min:8',
             'position_id'=>'required',
             'dep_id'=>'required',
             'branch_id'=>'required',
@@ -90,7 +89,6 @@ class UserController extends Controller
             'name' => $this->request->get('name'),
             'full_name'=>$this->request->get('full_name'),
             'email' => $email,
-            'password' => app('hash')->make($password),
             'is_web' => (int)($this->request->get('is_web')),
             'shop_id' => mongo_id($shop->_id),
             'position_id'=>mongo_id($position->_id),
@@ -176,49 +174,15 @@ class UserController extends Controller
                 }
             }
      */
-    public function update(Request $request)
+    public function update()
     {
-      // Send email when user register supplier
-      // $params = ['email' => 'onclick.trungha@gmail.com',
-      //            'full_name' => 'Trung Hà',
-      //            'subject' => 'Đăng ký làm đại lý trên FAMA'];
-      // var_dump($this->userRepository->sendMailActiveSupplier($params));return;
+        $user=$this->userRepository->find($this->request->get('id'));
+        if($this->request->method('POST'))
+        {
 
-        $entityUser = new User;
-        $fillableList = $entityUser->getFillable();
-
-        $userId = $this->user->id;
-        $user = $this->userRepository->findByField('_id',$userId)->first();
-        
-        foreach($fillableList as $key => $value){
-            if($value == 'company'){
-                if(!empty($this->request->get('company'))){
-                  if(empty($user->company)){
-                        $user->company = $this->request->get('company');
-                    } else {
-                        $company = $user->company;
-                        foreach($this->request->get('company') as $k => $v){
-                            $company[$k] = $v;
-                        }
-                        $user->company = $company;
-                    }
-                }
-                
-            } elseif ($value == 'email') {
-                if(!empty($this->request->get('email'))) {
-                    $emails = $user->emails;
-                    $emails[0]['address'] = $this->request->get('email');
-                    $user->emails = $emails;
-                }
-            }
-            else {
-                if(!empty($this->request->get($value)) || ($this->request->get($value) == 0 && $value != 'emails')){
-                    $user->$value = $this->request->get($value);
-                }
-            }
         }
-        $user->save();
         return $this->successRequest($user->transform());
+
     }
 
     /**

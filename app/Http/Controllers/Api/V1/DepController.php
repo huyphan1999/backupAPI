@@ -72,32 +72,32 @@ class DepController extends Controller
     {
         // Validate Data import.
         $validator = \Validator::make($this->request->all(), [
-            'branchName' => 'required',
-            'depName'=> 'required',
+            'branch_name' => 'required',
+            'dep_name'=> 'required',
         ]);
         if ($validator->fails()) {
             return $this->errorBadRequest($validator->messages()->toArray());
         }
 
-        $branchname = $this->request->get('branchName');
-        $depname=$this->request->get('depName');
-        // Kiểm tra xem email đã được đăng ký trước đó chưa
-        $branchCheck = Branch::where(['branchName' => $branchname])->first();
-        $depCheck=Dep::where(['depName'=>$depname])->first();
+        $branchname = $this->request->get('branch_name');
+        $depname=$this->request->get('dep_name');
+        $branchCheck = Branch::where(['branch_name' => $branchname])->first();
+        $depCheck=Dep::where(['dep_name'=>$depname])->first();
         if(empty($branchCheck)) {
             return $this->errorBadRequest(trans('Chi nhánh không tồn tại'));
         }
         else{
-            if(!empty($depCheck)){
+            if(!empty($depCheck) && $branchCheck==$depCheck->branchName){
                 return $this->errorBadRequest(trans('Phòng ban đã tồn tại'));
             }
         }
 
         // Tạo shop trước
         $attributes = [
-            'depName'=>$depname,
+            'dep_name'=>$depname,
             'is_web' => (int)($this->request->get('is_web')),
             'branch_id'=>mongo_id($branchCheck->_id),
+            'shop_id'=>mongo_id($branchCheck->shop_id)
         ];
         $dep = $this->depRepository->create($attributes);
 

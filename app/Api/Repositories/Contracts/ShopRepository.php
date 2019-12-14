@@ -11,4 +11,5 @@ use App\Api\Entities\Shop;
 interface ShopRepository extends RepositoryInterface
 {
     public function getShop($params = [],$limit = 0);
+    public function deleteShop($id,$limit =0);
 }

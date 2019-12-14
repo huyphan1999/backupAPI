@@ -63,6 +63,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
                 'uses' => 'UserController@update',
             ]);
 
+
             //Get Info User
             $api->get('user/info/{username?}', [
                 'as' => 'user.info',
@@ -79,6 +80,10 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
         $api->post('user/create',[
             'as'=>'user.create',
             'uses'=>'UserController@createUser'
+        ]);
+        $api->get('user/update', [
+            'as' => 'user.update',
+            'uses' => 'UserController@update',
         ]);
     });
         
