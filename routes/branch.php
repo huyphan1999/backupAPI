@@ -36,6 +36,10 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
             'as' => 'branch.view',
             'uses' => 'BranchController@viewBranch',
         ]);
+        $api->get('branch/delete', [
+            'as' => 'branch.delete',
+            'uses' => 'BranchController@deleteBranch',
+        ]);
     });
 
 

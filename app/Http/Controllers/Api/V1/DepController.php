@@ -6,6 +6,7 @@ use App\Api\Repositories\Contracts\BranchRepository;
 use App\Api\Repositories\Contracts\DepRepository;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\V1\PositionController;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -13,6 +14,7 @@ use Illuminate\Auth\AuthManager;
 use Gma\Curl;
 use App\Api\Entities\Dep;
 use App\Api\Entities\Branch;
+use App\Api\Entities\User;
 
 //Google firebase
 use Kreait\Firebase\Factory;
@@ -201,4 +203,11 @@ class DepController extends Controller
         // return $this->successRequest($user->transform());
     }
     #endregion
+    public function deleteDep()
+    {
+        $id=$this->request->get('id');
+        $dep=Dep::where('_id',mongo_id($id))->first();
+        $user=User::where('dep_id',mongo_id($dep->_id))->update(['dep_id'=>null]);
+        return $this->successRequest($user);
+    }
 }

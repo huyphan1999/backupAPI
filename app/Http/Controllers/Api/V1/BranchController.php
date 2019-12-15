@@ -200,4 +200,11 @@ class BranchController extends Controller
         // return $this->successRequest($user->transform());
     }
     #endregion
+    public function deleteBranch()
+    {
+        $id=$this->request->get('id');
+        $user=User::where('branch_id',mongo_id($id))->update(['branch_id'=>null]);
+        $branch=Branch::where('_id',mongo_id($id))->delete();
+        return $this->successRequest($branch);
+    }
 }

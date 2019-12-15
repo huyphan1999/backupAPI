@@ -250,7 +250,7 @@ class UserController extends Controller
         $data = $user->transform();
         return $this->successRequest($data);
     }
-    public function deleteUser()
+    public function deleteUser($id)
     {
         $id=$this->request->get('id');
         try{

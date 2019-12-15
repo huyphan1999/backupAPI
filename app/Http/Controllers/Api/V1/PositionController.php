@@ -15,6 +15,7 @@ use Illuminate\Auth\AuthManager;
 use Gma\Curl;
 use App\Api\Entities\Position;
 use App\Api\Entities\Shop;
+use App\Api\Entities\User;
 //Google firebase
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
@@ -63,5 +64,12 @@ class PositionController extends Controller
         $position=$this->positionRepository->create($attribute);
         $data=$position->transform();
         return $this->successRequest($data);
+    }
+    public function deletePosition()
+    {
+        $id=$this->request->get('id');
+        $user=User::where('position_id',mongo_id($id))->update(['position_id'=>null]);
+        $deleted_position=Position::where('_id',$id)->delete();
+        return ($deleted_position);
     }
 }

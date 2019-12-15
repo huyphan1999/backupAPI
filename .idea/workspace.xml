@@ -3,18 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" id="6f03bd38-5f60-4da1-815a-cbcfbea1f4ed" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Api/Entities/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Api/Entities/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Api/Transformers/BranchTransformer.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Api/Transformers/BranchTransformer.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Api/Transformers/PositionTransformer.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Api/Transformers/PositionTransformer.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Api/Transformers/UserTransformer.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Api/Transformers/UserTransformer.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/AuthController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/AuthController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Api/Repositories/Eloquent/ShopRepositoryEloquent.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Api/Repositories/Eloquent/ShopRepositoryEloquent.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/BranchController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/BranchController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/DepController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/DepController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/PositionController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/PositionController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/ShopController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/ShopController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/UserController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/ManagerRole.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/ManagerRole.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/user.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/user.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/branch.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/branch.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/department.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/department.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/position.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/position.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -203,8 +199,16 @@
       <workItem from="1576127674943" duration="13530000" />
       <workItem from="1576141848178" duration="810000" />
       <workItem from="1576225666662" duration="1864000" />
-      <workItem from="1576386482876" duration="9229000" />
+      <workItem from="1576386482876" duration="14775000" />
     </task>
+    <task id="LOCAL-00001" summary="xóa user, phân quyền">
+      <created>1576396056828</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1576396056828</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -223,15 +227,19 @@
       </map>
     </option>
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="xóa user, phân quyền" />
+    <option name="LAST_COMMIT_MESSAGE" value="xóa user, phân quyền" />
+  </component>
   <component name="WindowStateProjectService">
     <state x="674" y="110" key="#PHP" timestamp="1576386481632" />
     <state x="674" y="110" key="#PHP/0.0.1920.1040@0.0.1920.1040" timestamp="1576386481633" />
     <state x="644" y="174" width="645" height="691" key="#phpunit.xml" timestamp="1576386481633" />
     <state x="644" y="174" width="645" height="691" key="#phpunit.xml/0.0.1920.1040@0.0.1920.1040" timestamp="1576386481633" />
-    <state x="598" y="116" key="CommitChangelistDialog2" timestamp="1576396009747">
+    <state x="598" y="116" key="CommitChangelistDialog2" timestamp="1576396055231">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="598" y="116" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1576396009747" />
+    <state x="598" y="116" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1576396055231" />
     <state x="746" y="274" key="FileChooserDialogImpl" timestamp="1576386481633" />
     <state x="746" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1576386481633" />
     <state width="1877" height="348" key="GridCell.Tab.0.bottom" timestamp="1576386481633" />

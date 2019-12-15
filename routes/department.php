@@ -36,6 +36,10 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
             'as' => 'dep.view',
             'uses' => 'DepController@viewDep',
         ]);
+        $api->get('dep/delete', [
+            'as' => 'dep.delete',
+            'uses' => 'DepController@deleteDep',
+        ]);
     });
 
 

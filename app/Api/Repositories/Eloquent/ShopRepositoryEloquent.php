@@ -11,10 +11,13 @@ use App\Api\Repositories\Contracts\DepRepository;
 use App\Api\Repositories\Contracts\ShopRepository;
 use App\Api\Entities\Shop;
 use App\Api\Entities\User;
+use App\Api\Entities\Position;
+use App\Api\Entities\Branch;
+use App\Api\Entities\Dep;
 use App\Api\Validators\ShopValidator;
 use App\Api\Criteria\ShopCriteria;
-use Illuminate\Http\Request;
 use App\Api\Entities\Role;
+use Illuminate\Http\Request;
 use Carbon\Carbon;
 /**
  * Class ShopRepositoryEloquent
@@ -75,22 +78,22 @@ class ShopRepositoryEloquent extends BaseRepository implements ShopRepository
             {
                 foreach($id as $row)
                 {
-                    $user=$this->userRepository->deleteWhere(['shop_id'=>mongo_id($row->id)]);
-                    $position=$this->positionRepository->deleteWhere(['shop_id'=>mongo_id($row->id)]);
-                    $dep=$this->depRepository->deleteWhere(['shop_id'=>mongo_id($row->id)]);
-                    $branch=$this->branchRepository->deleteWhere(['shop_id'=>mongo_id($row->id)]);
-                    $shop=$this->shopRepository->deleteWhere(['_id'=>mongo_id($row->id)]);
+                    $user=User::where('shop_id',mongo_id($row->id))->update(['shop_id'=>null]);
+                    $position=Position::where('shop_id',mongo_id($row->id))->update(['shop_id'=>null]);
+                    $dep=Dep::where('shop_id',mongo_id($row->id))->update(['shop_id'=>null]);
+                    $branch=Branch::where('shop_id',mongo_id($row->id))->update(['shop_id'=>null]);
+                    $shop=Shop::where('_id',mongo_id($row->id))->delete();
                 }
 
             }
             else
             {
-                $user=$this->userRepository->deleteWhere(['shop_id'=>mongo_id($id)]);
-                $position=$this->positionRepository->deleteWhere(['shop_id'=>mongo_id($id)]);
-                $dep=$this->depRepository->deleteWhere(['shop_id'=>mongo_id($id)]);
-                $branch=$this->branchRepository->deleteWhere(['shop_id'=>mongo_id($id)]);
-                $shop=$this->shopRepository->deleteWhere(['_id'=>mongo_id($id)]);
+                $user=User::where('shop_id',mongo_id($id))->update(['shop_id'=>null]);
+                $position=Position::where('shop_id',mongo_id($id))->update(['shop_id'=>null]);
+                $dep=Dep::where('shop_id',mongo_id($id))->update(['shop_id'=>null]);
+                $branch=Branch::where('shop_id',mongo_id($id))->update(['shop_id'=>null]);
+                $shop=Shop::where('_id',mongo_id($id))->delete();
             }
-            return $this->successRequest("Đã xóa thành công");
+        return;
     }
 }
