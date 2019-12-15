@@ -75,8 +75,8 @@ class AuthController extends Controller
     {
         // Validate Data import.
         $validator = \Validator::make($this->request->all(), [
+            'name'=>'required',
             'email' => 'required|email|max:255',
-            'password' => 'required|min:8',
         ]);
         if ($validator->fails()) {
             return $this->errorBadRequest($validator->messages()->toArray());
@@ -103,6 +103,6 @@ class AuthController extends Controller
             $token = $this->auth->fromUser($user);
             return $this->successRequest($token);
         }
-        return $this->successRequest($data);
+        return $this->errorBadRequest("Đăng Nhập Thất Bại");
     }
 }

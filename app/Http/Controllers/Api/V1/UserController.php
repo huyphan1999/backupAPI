@@ -16,7 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Auth\AuthManager;
-
+use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     /**
@@ -48,27 +48,27 @@ class UserController extends Controller
 
     public function createUser()
     {
+
         $validator = \Validator::make($this->request->all(), [
-            'shop_id' => 'required',
+            'full_name'=>'required',
             'email' => 'email|required|max:255',
-            'position_id'=>'required',
-            'dep_id'=>'required',
-            'branch_id'=>'required',
-            'is_root'=>'is_root',
+            'is_root'=>'required',
         ]);
+        if ($validator->fails()) {
+            return $this->errorBadRequest($validator->messages()->toArray());
+        }
         $position=$this->request->get('position');
         $email = strtolower($this->request->get('email'));
-        $password = $this->request->get('password');
         // Kiểm tra xem email đã được đăng ký trước đó chưa
         $userCheck = User::where(['email' => $email])->first();
         if(!empty($userCheck)) {
             return $this->errorBadRequest(trans('user.email_exists'));
         }
         //Lấy shop và position để thêm user vào
-        $shop = Shop::where(['_id' => mongo_id($this->request->get('shop_id'))])->first();
-        if(empty($shop))
+        $branch = Branch::where(['_id' => mongo_id($this->request->get('branch_id'))])->first();
+        if(empty($branch))
         {
-            return $this->errorBadRequest(trans('Chưa có Shop'));
+            return $this->errorBadRequest(trans('Chưa có chi nhánh'));
         }
         $position = Position::where(['_id' => mongo_id($this->request->get('position_id'))])->first();
         if(empty($position))
@@ -80,24 +80,20 @@ class UserController extends Controller
         {
             return $this->errorBadRequest(trans('Chưa có phòng ban'));
         }
-        $branch = Branch::where(['_id' => mongo_id($this->request->get('branch_id'))])->first();
-        if(empty($branch))
-        {
-            return $this->errorBadRequest(trans('Chưa có chi nhánh'));
-        }
+
         $userAttributes = [
-            'name' => $this->request->get('name'),
             'full_name'=>$this->request->get('full_name'),
             'email' => $email,
             'is_web' => (int)($this->request->get('is_web')),
-            'shop_id' => mongo_id($shop->_id),
+            'shop_id' => mongo_id($branch->shop_id),
             'position_id'=>mongo_id($position->_id),
             'branch_id'=>mongo_id($branch->_id),
             'dep_id'=>mongo_id($dep->_id),
             'is_root' => $this->request->get('is_root'),
         ];
         $user = $this->userRepository->create($userAttributes);
-        return $this->successRequest($user->transform());
+        $token = $this->auth->fromUser($user);
+        return $this->successRequest($token);
     }
     /**
      * @api {get} /user 1. Current user info
@@ -177,12 +173,32 @@ class UserController extends Controller
     public function update()
     {
         $user=$this->userRepository->find($this->request->get('id'));
-        if($this->request->method('POST'))
+        if($this->request->isMethod('POST'))
         {
-
+            $validator = \Validator::make($this->request->all(), [
+                'full_name'=>'required',
+                'email' => 'email|required|max:255',
+                'is_root'=>'required',
+                'position_id'=>'required',
+                'dep_id'=>'required',
+                'branch_id'=>'required',
+            ]);
+            if ($validator->fails()) {
+                return $this->errorBadRequest($validator->messages()->toArray());
+            }
+            $email=strtolower($this->request->get('email'));
+            $userAttributes = [
+                'full_name'=>$this->request->get('full_name'),
+                'email' => $email,
+                'position_id'=>mongo_id($this->request->get('position_id')),
+                'branch_id'=>mongo_id($this->request->get('branch_id')),
+                'dep_id'=>mongo_id($this->request->get('dep_id')),
+                'is_root' => $this->request->get('is_root'),
+            ];
+            $user=$this->userRepository->update($userAttributes,$user->_id);
+            return $this->successRequest($user->transform());
         }
         return $this->successRequest($user->transform());
-
     }
 
     /**
@@ -233,5 +249,17 @@ class UserController extends Controller
         }
         $data = $user->transform();
         return $this->successRequest($data);
+    }
+    public function deleteUser()
+    {
+        $id=$this->request->get('id');
+        try{
+            $delete_user=User::where('_id',$id)->delete();
+        }
+        catch(\Exception $e)
+        {
+            return $this->errorBadRequest($e->messages()->toArray());
+        }
+        return $this->successRequest('Đã xóa thành công');
     }
 }

@@ -52,15 +52,33 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
 
         // need authentication
         $api->group(['middleware' => ['api.auth']], function ($api) {
+            //Cần quyền manager
+            $api->group(['middleware' => ['manager.role']], function ($api) {
+                //Delete user
+                $api->get('user/delete', [
+                    'as' => 'user.delete',
+                    'uses' => 'UserController@deleteUser',
+                ]);
+            });
+            //
             $api->get('user', [
                 'as' => 'user.show',
                 'uses' => 'UserController@userShow',
             ]);
 
-            //Update user profile
+            //Update user    profile
             $api->post('user/update', [
                 'as' => 'user.update',
                 'uses' => 'UserController@update',
+            ]);
+            $api->get('user/update', [
+                'as' => 'user.update',
+                'uses' => 'UserController@update',
+            ]);
+            //Tạo user
+            $api->post('user/create',[
+                'as'=>'user.create',
+                'uses'=>'UserController@createUser'
             ]);
 
 
@@ -75,16 +93,10 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
                 'as' => 'user.companyField',
                 'uses' => 'UserController@companyField',
             ]);
+
         });
         //Create User
-        $api->post('user/create',[
-            'as'=>'user.create',
-            'uses'=>'UserController@createUser'
-        ]);
-        $api->get('user/update', [
-            'as' => 'user.update',
-            'uses' => 'UserController@update',
-        ]);
+
     });
         
 

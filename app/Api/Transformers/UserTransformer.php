@@ -66,10 +66,10 @@ class UserTransformer extends TransformerAbstract
             $data['position'] = $position->transform();
         }
         if(!empty($branch)) {
-            $data['branch'] = $position->transform();
+            $data['branch'] = $branch->transform();
         }
         if(!empty($dep)) {
-            $data['dep'] = $position->transform();
+            $data['dep'] = $dep->transform();
         }
         return $data;
     }

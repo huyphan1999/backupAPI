@@ -94,7 +94,6 @@ class ShopController extends Controller
 
         // Sau đó tạo user
         $userAttributes = [
-            'name' => $this->request->get('name'),
             'full_name'=>$this->request->get('full_name'),
             'email' => $email,
             'is_web' => (int)($this->request->get('is_web')),
@@ -105,21 +104,9 @@ class ShopController extends Controller
             'is_root' => 1,
         ];
         $user = $this->userRepository->create($userAttributes);
-        $credentials = $this->request->only('email', 'password');
-
-        $credentials['email'] = strtolower($credentials['email']);
-        if (!$token = $this->auth->attempt($credentials)) {
-            return $this->errorUnauthorized([trans('auth.incorrect')]);
-        }
-
-        $data = array('token' => $token);
-
-        $this->auth->setToken($token);
-        $user = $this->auth->user();
-
-        return $this->successRequest($data);
-        
-        // return $this->successRequest($user->transform());
+        //Gán token vào user
+        $token = $this->auth->fromUser($user);
+        return $this->successRequest($token);
     }
     public function viewShop()
     {

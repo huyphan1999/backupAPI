@@ -72,16 +72,15 @@ class DepController extends Controller
     {
         // Validate Data import.
         $validator = \Validator::make($this->request->all(), [
-            'branch_name' => 'required',
+            'branch_id' => 'required',
             'dep_name'=> 'required',
         ]);
         if ($validator->fails()) {
             return $this->errorBadRequest($validator->messages()->toArray());
         }
 
-        $branchname = $this->request->get('branch_name');
         $depname=$this->request->get('dep_name');
-        $branchCheck = Branch::where(['branch_name' => $branchname])->first();
+        $branchCheck = Branch::where(['_id'=>mongo_id($this->request->get('branch_id'))])->first();
         $depCheck=Dep::where(['dep_name'=>$depname])->first();
         if(empty($branchCheck)) {
             return $this->errorBadRequest(trans('Chi nhánh không tồn tại'));
@@ -92,7 +91,6 @@ class DepController extends Controller
             }
         }
 
-        // Tạo shop trước
         $attributes = [
             'dep_name'=>$depname,
             'is_web' => (int)($this->request->get('is_web')),
@@ -103,7 +101,7 @@ class DepController extends Controller
 
 
 
-        return $this->successRequest($dep->transform());
+        return $this->successRequest($dep);
 
         // return $this->successRequest($user->transform());
     }

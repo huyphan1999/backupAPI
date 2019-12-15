@@ -36,7 +36,7 @@ class ManagerRole
     public function handle($request, Closure $next, $guard = null)
     {
         $user = Auth::user();
-        if(empty($user) || $user->admin_role != 'manager') {
+        if(empty($user) || $user->transform()['position']["permission"] <1) {
             return response(['message'=>'Khong co quyen.','status_code'=>401], 401);
         }
         return $next($request);

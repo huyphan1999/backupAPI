@@ -37,7 +37,7 @@ class PositionController extends Controller
     }
     public function createPosition()
     {
-        $validator= $validator = \Validator::make($this->request->all(), [
+        $validator = \Validator::make($this->request->all(), [
             'position_name' => 'required',
             'shop_id'=>'required',
             'permission'=>'required',
@@ -58,12 +58,10 @@ class PositionController extends Controller
         $attribute=[
             'shop_id'=>mongo_id($shop->_id),
             'position_name'=>$this->request->get('position_name'),
-            'permission'=>$this->request->get('permission'),
+            'permission'=>(int)$this->request->get('permission'),
         ];
         $position=$this->positionRepository->create($attribute);
         $data=$position->transform();
         return $this->successRequest($data);
     }
-
-
 }

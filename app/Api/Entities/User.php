@@ -18,6 +18,7 @@ use App\Api\Entities\Shop;
 use App\Api\Entities\Position;
 use App\Api\Entities\Branch;
 use App\Api\Entities\Dep;
+
 class User extends Moloquent implements AuthenticatableContract, JWTSubject
 {
     use Authenticatable, GmaUserTrait, SoftDeletes;
@@ -89,7 +90,7 @@ class User extends Moloquent implements AuthenticatableContract, JWTSubject
     {
         $branch=null;
         if(!empty($this->branch_id)) {
-            $branch = Branch::where(['_id' => mongo_id($this->branch_id)])->first();
+            $branch = Branch::where(['_id' => $this->branch_id])->first();
         }
         return $branch;
     }

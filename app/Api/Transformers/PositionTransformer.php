@@ -22,8 +22,7 @@ class PositionTransformer extends TransformerAbstract
         return [
             'id'         => $model->_id,
             'position_name'  =>$model->position_name,
-            'created_at' => $model->created_at,
-            'updated_at' => $model->updated_at
+            'permission'=>$model->permission
         ];
     }
 }
