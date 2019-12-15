@@ -20,6 +20,7 @@ class ShiftTransformer extends TransformerAbstract
     public function transform(Shift $model)
     {
         return [
+            'dep_id'=>$model->dep_id,
             'shift_name'         => $model->shift_name,
             'time_begin'=>$model->time_begin,
             'time_out'=>$model->time_end

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Api\Entities\Shift;
 use App\Api\Repositories\Contracts\EmpshiftRepository;
 use App\Api\Repositories\Contracts\UserRepository;
 
@@ -65,28 +66,36 @@ class EmpshiftController extends Controller
      * }
      */
 
-    #region vao ca
+    #region nhan vien dang ky ca
     public function registerEF()
     {
         // Validate Data import.
-        /*$validator = \Validator::make($this->request->all(), [
-            'user'=>'required',
+        $validator = \Validator::make($this->request->all(), [
+            'user'=>'string|required',
+            'shift_name'=>'required',
         ]);
         if ($validator->fails()) {
             return $this->errorBadRequest($validator->messages()->toArray());
         }
 
         $user=$this->request->get('user');
-        $userCheck=User::where([])*/
+        $shift_name=$this->request->get('shift_name');
+        $userCheck=User::where(['name'=>$user])->first();
+        $shiftCheck=Shift::where(['shift_name'=>$shift_name])->first();
+        if(empty($userCheck)){
+            return $this->errorBadRequest('Nhân viên không tồn tại');
+        }
+        if(empty($shiftCheck)){
+            return $this->errorBadRequest('Ca làm chưa đăng ký');
+        }
 
-        $dateCheckin=date("Y-m-d");
-        $timeIn=date("h:i");
-        $timeOut=null;
-        // Tạo shop trước
+        $user_id=mongo_id($userCheck->_id);
+        $shift_id=mongo_id($shiftCheck->_id);
+
         $attributes = [
-            'date_checkin'=>$dateCheckin,
-            'time_in'=>$timeIn,
-            'time_out'=>$timeOut
+            'user_id'=>$user_id,
+            //'date_of_week'=>$this->request->get('date_of_week'),
+            'shift_id'=>$shift_id,
         ];
         $empShift = $this->empshiftRepository->create($attributes);
 
@@ -98,70 +107,9 @@ class EmpshiftController extends Controller
     }
     #endregion
 
-    #region xoa ca làm
-    public function delEF()
-    {
-        // Validate Data import.
-        $validator = \Validator::make($this->request->all(), [
-            'id'=>'required'
-        ]);
-        if ($validator->fails()) {
-            return $this->errorBadRequest($validator->messages()->toArray());
-        }
-
-        $id = $this->request->get('id');
-        // Kiểm tra xem ca đã được đăng ký trước đó chưa
-        $idCheck = Empshift::where(['_id' => $id])->first();
-        if(empty($idCheck)) {
-            return $this->errorBadRequest(trans('Ca làm không tồn tại'));
-        }
-
-        // Tạo shop trước
-        $idCheck->delete();
 
 
-
-        return $this->successRequest();
-
-        // return $this->successRequest($user->transform());
-    }
-    #endregion
-
-    #region ra ca
-    public function editEF()
-    {
-        // Validate Data import.
-        $validator = \Validator::make($this->request->all(), [
-            'id'=>'required',
-        ]);
-        if ($validator->fails()) {
-            return $this->errorBadRequest($validator->messages()->toArray());
-        }
-
-        $id=$this->request->get('id');
-        // Kiểm tra xem ca làm đã được đăng ký trước đó chưa
-
-        $idCheck=Empshift::where(['_id'=>$id])->first();
-        if(empty($idCheck)) {
-            return $this->errorBadRequest(trans('Ca làm không tồn tại'));
-        }
-
-        $timeOut=date("h:i");
-        // lấy thuộc tính
-        $attributes = [
-            'time_out'=>$timeOut,
-        ];
-        $empshift = $this->empshiftRepository->update($attributes,$id);
-
-
-
-        return $this->successRequest($empshift->transform());
-
-        // return $this->successRequest($user->transform());
-    }
-    #endregion
-
-    #region xem phong ban
+    #region xem ca
     public function viewEF()
     {
         // Validate Data import.
@@ -188,7 +136,7 @@ class EmpshiftController extends Controller
 
         return $this->successRequest($dep);*/
 
-        $empshift=$this->empshiftRepository->getEmpshift(["date_checkin"=>$this->request->get('id')]);
+        $empshift=$this->empshiftRepository->getEmpshift(["user_id"=>$this->request->get('id')]);
         return $this->successRequest($empshift);
 
         // return $this->successRequest($user->transform());

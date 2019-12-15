@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Api\Entities\Dep;
 use App\Api\Repositories\Contracts\ShiftRepository;
 //use App\Api\Repositories\Contracts\DepRepository;
 
@@ -70,6 +71,7 @@ class ShiftController extends Controller
     {
         // Validate Data import.
         $validator = \Validator::make($this->request->all(), [
+            'dep_name'=>'required',
             'shift_name'=>'required',
             'time_begin'=>'required|date_format:H:i',
             'time_end'=>'required|date_format:H:i'
@@ -78,10 +80,17 @@ class ShiftController extends Controller
             return $this->errorBadRequest($validator->messages()->toArray());
         }
 
+        $depName=$this->request->get('dep_name');
+        $depCheck=Dep::where(['depName'=>$depName])->first();
+        if(empty($depCheck)){
+            return $this->errorBadRequest('Chưa có phòng ban');
+        }
 
+        $dep_id=mongo_id($depCheck->_id);
 
         // Tạo shop trước
         $attributes = [
+            'dep_id'=>$dep_id,
             'shift_name'=>$this->request->get('shift_name'),
             'time_begin'=>$this->request->get('time_begin'),
             'time_end'=>$this->request->get('time_end'),
@@ -164,7 +173,7 @@ class ShiftController extends Controller
     }
     #endregion
 
-    #region xem phong ban
+    #region xem ca lam
     public function viewShift()
     {
         // Validate Data import.
