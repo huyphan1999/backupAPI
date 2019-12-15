@@ -90,10 +90,10 @@ class ShiftController extends Controller
 
         // Tạo shop trước
         $attributes = [
-            'dep_id'=>$dep_id,
             'shift_name'=>$this->request->get('shift_name'),
             'time_begin'=>$this->request->get('time_begin'),
             'time_end'=>$this->request->get('time_end'),
+            'dep_id'=>$dep_id,
         ];
         $shift = $this->shiftRepository->create($attributes);
 
