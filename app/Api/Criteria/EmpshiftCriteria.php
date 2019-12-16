@@ -6,9 +6,9 @@ use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 /**
- * Class DepCriteria
+ * Class EmpshiftCriteria
  */
-class DepCriteria implements CriteriaInterface
+class EmpshiftCriteria implements CriteriaInterface
 {
     protected $params;
     public function __construct($params = [])
@@ -27,8 +27,8 @@ class DepCriteria implements CriteriaInterface
     public function apply($model, RepositoryInterface $repository)
     {
         $query = $model->newQuery();
-        if(!empty($this->params['depName'])) {
-            $query->where('depName',$this->params['depName']);
+        if(!empty($this->params['date_checkin'])) {
+            $query->where('date_checkin',$this->params['date_checkin']);
         }
         //Set language
         // $query->where('lang',app('translator')->getLocale());

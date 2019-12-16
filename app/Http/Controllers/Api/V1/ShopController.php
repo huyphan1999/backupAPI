@@ -145,4 +145,11 @@ class ShopController extends Controller
 //        $data=$this->shopRepository->delete($shop->_id);
 //        return $this->successRequest('Xóa thành công');
     }
+    public function viewShop()
+    {
+
+        $data=$this->shopRepository->getShop(["name"=>$this->request->get('id')]);
+        return $this->successRequest($data);
+    }
+
 }

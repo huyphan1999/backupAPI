@@ -24,6 +24,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
             'as' => 'shop.register',
             'uses' => 'ShopController@registerShop',
         ]);
+<<<<<<< HEAD
 
         // need authentication
         $api->group(['middleware' => ['api.auth']], function ($api) {
@@ -52,6 +53,12 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
             });
         });
 
+=======
+        $api->post('shop/view', [
+            'as' => 'shop.view',
+            'uses' => 'ShopController@viewShop',
+        ]);
+>>>>>>> 4289207273aa9d67b68f6295bdc9b6384e035954
     });
         
 

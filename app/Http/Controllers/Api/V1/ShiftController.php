@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Api\Repositories\Contracts\BranchRepository;
-use App\Api\Repositories\Contracts\DepRepository;
+use App\Api\Repositories\Contracts\ShiftRepository;
+//use App\Api\Repositories\Contracts\DepRepository;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Api\V1\PositionController;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Auth\AuthManager;
 use Gma\Curl;
-use App\Api\Entities\Dep;
-use App\Api\Entities\Branch;
-use App\Api\Entities\User;
+//use App\Api\Entities\Dep;
+use App\Api\Entities\Shift;
 
 //Google firebase
 use Kreait\Firebase\Factory;
@@ -24,30 +22,28 @@ use Firebase\Auth\Token\Exception\InvalidToken;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\Yaml\Tests\B;
 
-class DepController extends Controller
+class ShiftController extends Controller
 {
     /**
      * @var UserRepository
      */
-    protected $branchRepository;
+    protected $shiftRepository;
 
     /**
      * @var ShopRepository
      */
-    protected $depRepository;
+
 
     protected $auth;
 
     protected $request;
 
     public function __construct(
-        BranchRepository $branchRepository,
-        DepRepository $depRepository,
+        ShiftRepository $shiftRepository,
         AuthManager $auth,
         Request $request
     ) {
-        $this->branchRepository = $branchRepository;
-        $this->depRepository = $depRepository;
+        $this->shiftRepository = $shiftRepository;
         $this->request = $request;
         $this->auth = $auth;
         parent::__construct();
@@ -69,48 +65,39 @@ class DepController extends Controller
      * }
      */
 
-    #region tao phong ban
-    public function registerDep()
+    #region tao ca lam
+    public function registerShift()
     {
         // Validate Data import.
         $validator = \Validator::make($this->request->all(), [
-            'branch_id' => 'required',
-            'dep_name'=> 'required',
+            'shift_name'=>'required',
+            'time_begin'=>'required|date_format:H:i',
+            'time_end'=>'required|date_format:H:i'
         ]);
         if ($validator->fails()) {
             return $this->errorBadRequest($validator->messages()->toArray());
         }
 
-        $depname=$this->request->get('dep_name');
-        $branchCheck = Branch::where(['_id'=>mongo_id($this->request->get('branch_id'))])->first();
-        $depCheck=Dep::where(['dep_name'=>$depname])->first();
-        if(empty($branchCheck)) {
-            return $this->errorBadRequest(trans('Chi nhánh không tồn tại'));
-        }
-        else{
-            if(!empty($depCheck) && $branchCheck==$depCheck->branchName){
-                return $this->errorBadRequest(trans('Phòng ban đã tồn tại'));
-            }
-        }
 
+
+        // Tạo shop trước
         $attributes = [
-            'dep_name'=>$depname,
-            'is_web' => (int)($this->request->get('is_web')),
-            'branch_id'=>mongo_id($branchCheck->_id),
-            'shop_id'=>mongo_id($branchCheck->shop_id)
+            'shift_name'=>$this->request->get('shift_name'),
+            'time_begin'=>$this->request->get('time_begin'),
+            'time_end'=>$this->request->get('time_end'),
         ];
-        $dep = $this->depRepository->create($attributes);
+        $shift = $this->shiftRepository->create($attributes);
 
 
 
-        return $this->successRequest($dep);
+        return $this->successRequest($shift->transform());
 
         // return $this->successRequest($user->transform());
     }
     #endregion
 
-    #region xoa phong ban
-    public function delDep()
+    #region xoa ca làm
+    public function delShift()
     {
         // Validate Data import.
         $validator = \Validator::make($this->request->all(), [
@@ -122,9 +109,9 @@ class DepController extends Controller
 
         $id = $this->request->get('id');
         // Kiểm tra xem email đã được đăng ký trước đó chưa
-        $idCheck = Dep::where(['_id' => $id])->first();
+        $idCheck = Shift::where(['_id' => $id])->first();
         if(empty($idCheck)) {
-            return $this->errorBadRequest(trans('Phòng ban không tồn tại'));
+            return $this->errorBadRequest(trans('Ca làm không tồn tại'));
         }
 
         // Tạo shop trước
@@ -138,43 +125,47 @@ class DepController extends Controller
     }
     #endregion
 
-    #region sua phong ban
-    public function editDep()
+    #region sua làm
+    public function editShift()
     {
         // Validate Data import.
         $validator = \Validator::make($this->request->all(), [
             'id'=>'required',
-            'depName'=> 'required'
+            'shift_name'=>'required',
+            'time_begin'=>'required|date_format:H:i',
+            'time_end'=>'required|date_format:H:i'
         ]);
         if ($validator->fails()) {
             return $this->errorBadRequest($validator->messages()->toArray());
         }
 
         $id=$this->request->get('id');
-        // Kiểm tra xem email đã được đăng ký trước đó chưa
+        // Kiểm tra xem ca làm đã được đăng ký trước đó chưa
 
-        $idCheck=Dep::where(['_id'=>$id])->first();
+        $idCheck=Shift::where(['_id'=>$id])->first();
         if(empty($idCheck)) {
-            return $this->errorBadRequest(trans('Phòng ban không tồn tại'));
+            return $this->errorBadRequest(trans('Ca làm không tồn tại'));
         }
 
 
-        // Tạo shop trước
+        // lấy thuộc tính
         $attributes = [
-            'depName' => $this->request->get('depName'),
+            'shift_name'=>$this->request->get('shift_name'),
+            'time_begin'=>$this->request->get('time_begin'),
+            'time_end'=>$this->request->get('time_end'),
         ];
-        $dep = $this->depRepository->update($attributes,$id);
+        $shift = $this->shiftRepository->update($attributes,$id);
 
 
 
-        return $this->successRequest($dep->transform());
+        return $this->successRequest($shift->transform());
 
         // return $this->successRequest($user->transform());
     }
     #endregion
 
     #region xem phong ban
-    public function viewDep()
+    public function viewShift()
     {
         // Validate Data import.
         /*$validator = \Validator::make($this->request->all(), [
@@ -200,17 +191,10 @@ class DepController extends Controller
 
         return $this->successRequest($dep);*/
 
-        $dep=$this->depRepository->getDep(["depName"=>$this->request->get('id')]);
-        return $this->successRequest($dep);
+        $shift=$this->shiftRepository->getShift(["shift_name"=>$this->request->get('id')]);
+        return $this->successRequest($shift);
 
         // return $this->successRequest($user->transform());
     }
     #endregion
-    public function deleteDep()
-    {
-        $id=$this->request->get('id');
-        $dep=Dep::where('_id',mongo_id($id))->first();
-        $user=User::where('dep_id',mongo_id($dep->_id))->update(['dep_id'=>null]);
-        return $this->successRequest($user);
-    }
 }

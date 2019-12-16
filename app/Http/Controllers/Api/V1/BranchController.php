@@ -79,10 +79,19 @@ class BranchController extends Controller
             return $this->errorBadRequest($validator->messages()->toArray());
         }
 
+<<<<<<< HEAD
         $branchname=$this->request->get('branch_name');
         // Kiểm tra xem email đã được đăng ký trước đó chưa
         $shopCheck = Shop::where(['_id' => mongo_id($this->request->get('shop_id'))])->first();
         $branchCheck=Branch::where(['branch_name'=>$branchname])->first();
+=======
+        $name = $this->request->get('name');
+        $branchname=$this->request->get('branchName');
+        // Kiểm tra xem công ty đã được đăng ký trước đó chưa
+        $shopCheck = Shop::where(['name' => $name])->first();
+        //Kiểm tra xem đã có phòng ban chưa?
+        $branchCheck=Branch::where(['branchName'=>$branchname])->first();
+>>>>>>> 4289207273aa9d67b68f6295bdc9b6384e035954
         if(empty($shopCheck)) {
             return $this->errorBadRequest(trans('Công ty chưa đăng ký'));
         }
@@ -92,6 +101,10 @@ class BranchController extends Controller
             }
         }
 
+<<<<<<< HEAD
+=======
+        // thuộc tính của phòng ban
+>>>>>>> 4289207273aa9d67b68f6295bdc9b6384e035954
         $attributes = [
             'branch_name' => $this->request->get('branch_name'),
             'address' => $this->request->get('address'),
@@ -114,9 +127,9 @@ class BranchController extends Controller
         if ($validator->fails()) {
             return $this->errorBadRequest($validator->messages()->toArray());
         }
-
+        //lấy id
         $id = $this->request->get('id');
-        // Kiểm tra xem email đã được đăng ký trước đó chưa
+        // Kiểm tra xem id đã được đăng ký trước đó chưa
         $idCheck = Branch::where(['_id' => $id])->first();
         if(empty($idCheck)) {
             return $this->errorBadRequest(trans('Chi nhánh không tồn tại'));
@@ -147,7 +160,7 @@ class BranchController extends Controller
         }
 
         $id=$this->request->get('id');
-        // Kiểm tra xem email đã được đăng ký trước đó chưa
+        // Kiểm tra xem id đã được đăng ký trước đó chưa
 
         $idCheck=Branch::where(['_id'=>$id])->first();
         if(empty($idCheck)) {
@@ -155,7 +168,7 @@ class BranchController extends Controller
         }
 
 
-        // Tạo shop trước
+        // lấy thông tin để sửa
         $attributes = [
             'branchName' => $this->request->get('branchName'),
             'address' => $this->request->get('address'),
@@ -174,7 +187,7 @@ class BranchController extends Controller
     public function viewBranch()
     {
         // Validate Data import.
-        $validator = \Validator::make($this->request->all(), [
+        /*$validator = \Validator::make($this->request->all(), [
             'name'=>'required',
         ]);
         if ($validator->fails()) {
@@ -191,12 +204,16 @@ class BranchController extends Controller
 
         $companyid=mongo_id($companyCheck->_id);
 
-        $branch = Branch::where(['shop_id'=>$companyid])->paginate();
+
+        $branch = $this->branchRepository->findByField('shop_id',$companyid);
 
 
 
+
+        return $this->successRequest($branch);*/
+
+        $branch=$this->branchRepository->getBranch(["branchName"=>$this->request->get('id')]);
         return $this->successRequest($branch);
-
         // return $this->successRequest($user->transform());
     }
     #endregion

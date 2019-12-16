@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6f03bd38-5f60-4da1-815a-cbcfbea1f4ed" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/EmpshiftController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/ShiftController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/routes/empshift.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/routes/shift.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/app/Api/Repositories/Eloquent/ShopRepositoryEloquent.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Api/Repositories/Eloquent/ShopRepositoryEloquent.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/BranchController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/BranchController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/DepController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/DepController.php" afterDir="false" />
@@ -11,6 +16,10 @@
       <change beforePath="$PROJECT_DIR$/routes/branch.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/branch.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/department.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/department.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/position.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/position.php" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/app/Providers/RepositoryServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/RepositoryServiceProvider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bootstrap/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/bootstrap/app.php" afterDir="false" />
+>>>>>>> 4289207273aa9d67b68f6295bdc9b6384e035954
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -155,7 +164,27 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+<<<<<<< HEAD
     <property name="nodejs_package_manager_path" value="npm" />
+=======
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\SVTT\tanca-api\group-1-tanca-intern-api\app\Http\Controllers\Api\V1" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+>>>>>>> 4289207273aa9d67b68f6295bdc9b6384e035954
   </component>
   <component name="RunManager">
     <configuration name="phpunit.xml" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
@@ -190,6 +219,7 @@
       <workItem from="1575391695694" duration="3847000" />
       <workItem from="1575423430737" duration="20176000" />
       <workItem from="1575551171042" duration="102000" />
+<<<<<<< HEAD
       <workItem from="1575945580390" duration="645000" />
       <workItem from="1575946442686" duration="17000" />
       <workItem from="1575946528204" duration="475000" />
@@ -200,6 +230,11 @@
       <workItem from="1576141848178" duration="810000" />
       <workItem from="1576225666662" duration="1864000" />
       <workItem from="1576386482876" duration="14775000" />
+=======
+      <workItem from="1575564213261" duration="6731000" />
+      <workItem from="1575650205827" duration="628000" />
+      <workItem from="1575958127384" duration="12667000" />
+>>>>>>> 4289207273aa9d67b68f6295bdc9b6384e035954
     </task>
     <task id="LOCAL-00001" summary="xóa user, phân quyền">
       <created>1576396056828</created>

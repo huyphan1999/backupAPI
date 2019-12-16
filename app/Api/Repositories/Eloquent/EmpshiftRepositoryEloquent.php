@@ -2,18 +2,17 @@
 
 namespace App\Api\Repositories\Eloquent;
 
-use App\Api\Criteria\BranchCriteria;
-use App\Api\Criteria\ShopCriteria;
+use App\Api\Criteria\EmpshiftCriteria;
 use Prettus\Repository\Eloquent\BaseRepository;
 use App\Api\Repositories\Contracts\UserRepository;
-use App\Api\Repositories\Contracts\BranchRepository;
-use App\Api\Entities\Branch;
-use App\Api\Validators\BranchValidator;
+use App\Api\Repositories\Contracts\EmpshiftRepository;
+use App\Api\Entities\Empshift;
+use App\Api\Validators\EmpshiftValidator;
 
 /**
- * Class BranchRepositoryEloquent
+ * Class EmpshiftRepositoryEloquent
  */
-class BranchRepositoryEloquent extends BaseRepository implements BranchRepository
+class EmpshiftRepositoryEloquent extends BaseRepository implements EmpshiftRepository
 {
     /**
      * Specify Model class name
@@ -22,7 +21,7 @@ class BranchRepositoryEloquent extends BaseRepository implements BranchRepositor
      */
     public function model()
     {
-        return Branch::class;
+        return Empshift::class;
     }
 
     
@@ -34,9 +33,8 @@ class BranchRepositoryEloquent extends BaseRepository implements BranchRepositor
     {
     }
 
-
-    public function getBranch($params = [],$limit = 0) {
-        $this->pushCriteria(new BranchCriteria($params));
+    public function getEmpshift($params = [],$limit = 0) {
+        $this->pushCriteria(new EmpshiftCriteria($params));
         if(!empty($params['is_detail'])) {
             $item = $this->get()->first();
         } elseif(!empty($params['is_paginate'])) {
@@ -44,7 +42,7 @@ class BranchRepositoryEloquent extends BaseRepository implements BranchRepositor
         } else {
             $item = $this->all();
         }
-        $this->popCriteria(new BranchCriteria($params));
+        $this->popCriteria(new EmpshiftCriteria($params));
         return $item;
     }
 }

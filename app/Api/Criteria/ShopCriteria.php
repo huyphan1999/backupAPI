@@ -29,8 +29,16 @@ class ShopCriteria implements CriteriaInterface
     {
         $query = $model->newQuery();
 
+<<<<<<< HEAD
         if(!empty($this->params['shop_name'])) {
             $query->where('shop_name',$this->params['shop_name']);
+=======
+        if(!empty($this->params['name'])) {
+            $query->where('name',$this->params['name']);
+        }
+        if(!empty($this->params['shop_username'])) {
+            $query->where('username',$this->params['shop_username']);
+>>>>>>> 4289207273aa9d67b68f6295bdc9b6384e035954
         }
         if(!empty($this->params['shop_id'])) {
             $query->where('_id',mongo_id($this->params['shop_id']));
@@ -39,6 +47,10 @@ class ShopCriteria implements CriteriaInterface
         if(!empty($this->params['seller_id'])) {
             $query->where('seller_id',$this->params['seller_id']);
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4289207273aa9d67b68f6295bdc9b6384e035954
 
 
 //
