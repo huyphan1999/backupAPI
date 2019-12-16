@@ -74,7 +74,8 @@ class ShiftController extends Controller
             'dep_name'=>'required',
             'shift_name'=>'required',
             'time_begin'=>'required|date_format:H:i',
-            'time_end'=>'required|date_format:H:i'
+            'time_end'=>'required|date_format:H:i',
+            'work_day'=>'required',
         ]);
         if ($validator->fails()) {
             return $this->errorBadRequest($validator->messages()->toArray());
@@ -94,6 +95,7 @@ class ShiftController extends Controller
             'time_begin'=>$this->request->get('time_begin'),
             'time_end'=>$this->request->get('time_end'),
             'dep_id'=>$dep_id,
+            'work_day'=>$this->request->get('work_day'),
         ];
         $shift = $this->shiftRepository->create($attributes);
 

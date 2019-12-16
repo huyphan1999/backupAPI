@@ -2,13 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6f03bd38-5f60-4da1-815a-cbcfbea1f4ed" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/EmpshiftController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/ShiftController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/routes/empshift.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/routes/shift.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Providers/RepositoryServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/RepositoryServiceProvider.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bootstrap/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/bootstrap/app.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Api/Transformers/ShiftTransformer.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Api/Transformers/ShiftTransformer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/ShiftController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/ShiftController.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -180,7 +176,9 @@
       <workItem from="1575551171042" duration="102000" />
       <workItem from="1575564213261" duration="6731000" />
       <workItem from="1575650205827" duration="628000" />
-      <workItem from="1575958127384" duration="12667000" />
+      <workItem from="1575958127384" duration="13015000" />
+      <workItem from="1576417623198" duration="5143000" />
+      <workItem from="1576494422018" duration="533000" />
     </task>
     <servers />
   </component>

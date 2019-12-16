@@ -23,7 +23,8 @@ class ShiftTransformer extends TransformerAbstract
             'dep_id'=>$model->dep_id,
             'shift_name'         => $model->shift_name,
             'time_begin'=>$model->time_begin,
-            'time_out'=>$model->time_end
+            'time_out'=>$model->time_end,
+            'work_day'=>$model->work_day,
         ];
     }
 }
