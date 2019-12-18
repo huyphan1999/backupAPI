@@ -71,4 +71,14 @@ class PositionController extends Controller
         $deleted_position=Position::where('_id',$id)->delete();
         return ($deleted_position);
     }
+    public function listPosition()
+    {
+        $positions=$this->positionRepository->all();
+        $data=[];
+        foreach($positions as $position)
+        {
+            $data[]=$position->transform();
+        }
+        return $this->successRequest($data);
+    }
 }

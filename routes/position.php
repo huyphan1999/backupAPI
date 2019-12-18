@@ -13,6 +13,10 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
             'as' => 'position.delete',
             'uses' => 'PositionController@deletePosition',
         ]);
+        $api->get('position/list', [
+            'as' => 'position.list',
+            'uses' => 'PositionController@listPosition',
+        ]);
     });
 
 
