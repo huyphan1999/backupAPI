@@ -102,6 +102,7 @@ class ShopController extends Controller
             'branch_id'=>null,
             'dep_id'=>null,
             'is_root' => 1,
+            'phone_number'=>$this->request->get('phone_number')
         ];
         $user = $this->userRepository->create($userAttributes);
         //Gán token vào user
@@ -153,5 +154,23 @@ class ShopController extends Controller
 //        $data=$this->shopRepository->getShop(["name"=>$this->request->get('id')]);
 //        return $this->successRequest($data);
 //    }
-
+    public function searchShop()
+    {
+        if (!empty($this->request->get('id'))) {
+            $params = [
+                'is_detail' => true,
+                'shop_id' => $this->request->get('id')
+            ];
+        } else
+            $params = [
+                'is_detail' => true,
+                'shop_id' => mongo_id($this->auth->getPayload()->get('shop_id'))
+            ];
+        $shop = $this->shopRepository->getShop($params);
+        $shopTrans = $shop->transform();
+        $shopTrans['packages'] = $shop->validatePackage('', 1);
+        //Tạm thời set =4 do client đang lỗi
+        $shopTrans['get_started_step'] = 4;
+        return $this->successRequest($shopTrans);
+    }
 }
