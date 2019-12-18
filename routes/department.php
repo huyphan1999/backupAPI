@@ -24,17 +24,13 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
             'as' => 'dep.register',
             'uses' => 'DepController@registerDep',
         ]);
-        $api->post('dep/del', [
-            'as' => 'dep.del',
-            'uses' => 'DepController@delDep',
+        $api->post('dep/update', [
+            'as' => 'dep.update',
+            'uses' => 'DepController@updateDep',
         ]);
-        $api->post('dep/edit', [
-            'as' => 'dep.edit',
-            'uses' => 'DepController@editDep',
-        ]);
-        $api->post('dep/view', [
-            'as' => 'dep.view',
-            'uses' => 'DepController@viewDep',
+        $api->get('dep/list', [
+            'as' => 'dep.list',
+            'uses' => 'DepController@listDep',
         ]);
         $api->get('dep/delete', [
             'as' => 'dep.delete',

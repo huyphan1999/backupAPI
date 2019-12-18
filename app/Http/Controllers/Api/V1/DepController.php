@@ -103,7 +103,7 @@ class DepController extends Controller
 
 
 
-        return $this->successRequest($dep);
+        return $this->successRequest($dep->transform());
 
         // return $this->successRequest($user->transform());
     }
@@ -126,8 +126,6 @@ class DepController extends Controller
         if(empty($idCheck)) {
             return $this->errorBadRequest(trans('Phòng ban không tồn tại'));
         }
-
-        // Tạo shop trước
         $idCheck->delete();
 
 
@@ -173,44 +171,52 @@ class DepController extends Controller
     }
     #endregion
 
-    #region xem phong ban
-    public function viewDep()
+    #region xem danh sach phong ban
+    public function listDep()
+    {
+        $deps=$this->depRepository->all();
+        $data=[];
+        foreach($deps as $dep)
+        {
+            $data[]=$dep->transform();
+        }
+        return $this->successRequest($data);
+    }
+    #endregion
+    
+    public function deleteDep()
+    {
+        $id=$this->request->get('id');
+        $dep=Dep::where('_id',mongo_id($id))->delete();
+        return $this->successRequest($dep);
+    }
+    #region sua phòng ban
+    public function updateDep()
     {
         // Validate Data import.
-        /*$validator = \Validator::make($this->request->all(), [
-            'branchname'=>'required',
+        $validator = \Validator::make($this->request->all(), [
+            'id'=>'required',
+            'dep_name' => 'required',
         ]);
         if ($validator->fails()) {
             return $this->errorBadRequest($validator->messages()->toArray());
         }
 
-        $branchname=$this->request->get('branchname');
-        // Kiểm tra xem email đã được đăng ký trước đó chưa
+        $id=$this->request->get('id');
+        // Kiểm tra xem id đã được đăng ký trước đó chưa
 
-        $branchCheck=Branch::where(['branchName'=>$branchname])->first();
-        if(empty($branchCheck)) {
-            return $this->errorBadRequest(trans('Chi nhánh không có sẵn'));
+        $idCheck=$this->depRepository->find(mongo_id($id))->first();
+        if(empty($idCheck)) {
+            return $this->errorBadRequest(trans('Phòng ban không tồn tại'));
         }
-
-        $branchid=mongo_id($branchCheck->_id);
-
-        $dep = Dep::where(['branch_id'=>$branchid])->paginate();
-
-
-
-        return $this->successRequest($dep);*/
-
-        $dep=$this->depRepository->getDep(["depName"=>$this->request->get('id')]);
-        return $this->successRequest($dep);
+        // lấy thông tin để sửa
+        $attributes = [
+            'dep_name' => $this->request->get('dep_name'),
+        ];
+        $dep = $this->depRepository->update($attributes,mongo_id($id));
+        return $this->successRequest($dep->transform());
 
         // return $this->successRequest($user->transform());
     }
     #endregion
-    public function deleteDep()
-    {
-        $id=$this->request->get('id');
-        $dep=Dep::where('_id',mongo_id($id))->first();
-        $user=User::where('dep_id',mongo_id($dep->_id))->update(['dep_id'=>null]);
-        return $this->successRequest($user);
-    }
 }
