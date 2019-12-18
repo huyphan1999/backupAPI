@@ -101,8 +101,10 @@ class AuthController extends Controller
         if(!empty($user))
         {
             $token = $this->auth->fromUser($user);
-            return $this->successRequest($token);
+            $userTrans = $user->transform();
+            return $this->successRequest(['token' => $token, 'user' => $userTrans]);
         }
+
         return $this->errorBadRequest("Đăng Nhập Thất Bại");
     }
 }

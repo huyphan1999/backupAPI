@@ -110,8 +110,10 @@ class ShopController extends Controller
     }
     public function viewShop()
     {
-        $data=$this->shopRepository->getShop(["shop_name"=>$this->request->get('shop_name'),"shop_id"=>$this->request->get('id')]);
-        return $this->successRequest($data->transform());
+        $data=Shop::all();
+//        $data=$this->shopRepository->getShop(["shop_name"=>$this->request->get('shop_name'),"shop_id"=>$this->request->get('id')]);
+        return $this->successRequest($data);
+
     }
     public function editShop()
     {
@@ -145,11 +147,11 @@ class ShopController extends Controller
 //        $data=$this->shopRepository->delete($shop->_id);
 //        return $this->successRequest('Xóa thành công');
     }
-    public function viewShop()
-    {
-
-        $data=$this->shopRepository->getShop(["name"=>$this->request->get('id')]);
-        return $this->successRequest($data);
-    }
+//    public function viewShop()
+//    {
+//
+//        $data=$this->shopRepository->getShop(["name"=>$this->request->get('id')]);
+//        return $this->successRequest($data);
+//    }
 
 }
