@@ -76,7 +76,7 @@ class AuthController extends Controller
         // Validate Data import.
         $validator = \Validator::make($this->request->all(), [
             'name'=>'required',
-            'email' => 'required|email|max:255',
+            'phone_number' => 'required',
         ]);
         if ($validator->fails()) {
             return $this->errorBadRequest($validator->messages()->toArray());
@@ -97,14 +97,17 @@ class AuthController extends Controller
 //
 //        $this->auth->setToken($token);
 //        $user = $this->auth->user();
-          $user = $this->userRepository->findByField('email', $this->request->get('email'))->first();
-        if(!empty($user))
+        $shop=$this->shopRepository->findByField('name',$this->request->get('name'))->first();
+        if(!empty($shop))
         {
-            $token = $this->auth->fromUser($user);
-            $userTrans = $user->transform();
-            return $this->successRequest(['token' => $token, 'user' => $userTrans]);
+            $user = $this->userRepository->findByField('phone_number', $this->request->get('phone_number'))->first();
+            if(!empty($user))
+            {
+                $token = $this->auth->fromUser($user);
+                $userTrans = $user->transform();
+                return $this->successRequest(['token' => $token, 'user' => $userTrans]);
+            }
         }
-
         return $this->errorBadRequest("Đăng Nhập Thất Bại");
     }
 }

@@ -105,42 +105,13 @@ class BranchController extends Controller
     }
     #endregion
 
-    #region xoa chi nhanh
-    public function delBranch()
-    {
-        // Validate Data import.
-        $validator = \Validator::make($this->request->all(), [
-            'id'=>'required'
-        ]);
-        if ($validator->fails()) {
-            return $this->errorBadRequest($validator->messages()->toArray());
-        }
-        //lấy id
-        $id = $this->request->get('id');
-        // Kiểm tra xem id đã được đăng ký trước đó chưa
-        $idCheck = Branch::where(['_id' => $id])->first();
-        if(empty($idCheck)) {
-            return $this->errorBadRequest(trans('Chi nhánh không tồn tại'));
-        }
-
-        // Tạo shop trước
-        $idCheck->delete();
-
-
-
-        return $this->successRequest();
-
-        // return $this->successRequest($user->transform());
-    }
-    #endregion
-
     #region sua chi nhanh
-    public function editBranch()
+    public function updateBranch()
     {
         // Validate Data import.
         $validator = \Validator::make($this->request->all(), [
             'id'=>'required',
-            'branchName' => 'required',
+            'branch_name' => 'required',
             'address'=> 'required'
         ]);
         if ($validator->fails()) {
@@ -154,25 +125,35 @@ class BranchController extends Controller
         if(empty($idCheck)) {
             return $this->errorBadRequest(trans('Chi nhánh không tồn tại'));
         }
-
-
         // lấy thông tin để sửa
         $attributes = [
-            'branchName' => $this->request->get('branchName'),
+            'branch_name' => $this->request->get('branch_name'),
             'address' => $this->request->get('address'),
         ];
         $branch = $this->branchRepository->update($attributes,$id);
-
-
-
         return $this->successRequest($branch->transform());
 
         // return $this->successRequest($user->transform());
     }
     #endregion
-
+    public function listBranch()
+    {
+        $branches=$this->branchRepository->all();
+        $data=[];
+        foreach($branches as $branch)
+        {
+            $data[]=$branch->transform();
+        }
+        return $this->successRequest($data);
+    }
     #region xem chi nhanh
-    public function viewBranch()
+    public function detailBranch()
+    {
+        $id=$this->request->get('id');
+        $idCheck=Branch::where(['_id'=>$id])->first();
+        return $this->successRequest($idCheck->transform());
+    }
+    public function searchBranch()
     {
         // Validate Data import.
         /*$validator = \Validator::make($this->request->all(), [
@@ -200,7 +181,7 @@ class BranchController extends Controller
 
         return $this->successRequest($branch);*/
 
-        $branch=$this->branchRepository->getBranch(["branchName"=>$this->request->get('id')]);
+        $branch=$this->branchRepository->getBranch(["branch_name"=>$this->request->get('id')]);
         return $this->successRequest($branch);
         // return $this->successRequest($user->transform());
     }
@@ -208,7 +189,6 @@ class BranchController extends Controller
     public function deleteBranch()
     {
         $id=$this->request->get('id');
-        $user=User::where('branch_id',mongo_id($id))->update(['branch_id'=>null]);
         $branch=Branch::where('_id',mongo_id($id))->delete();
         return $this->successRequest($branch);
     }

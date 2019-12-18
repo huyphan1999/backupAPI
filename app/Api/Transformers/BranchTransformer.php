@@ -22,7 +22,14 @@ class BranchTransformer extends TransformerAbstract
             'id'=>$model->_id,
             'branch_name' => $model->branch_name,
             'address' => $model->address,
+            'shop_id'=>$model->shop_id,
+            'shop'=>[],
         ];
+        $shop=$model->shop();
+        if(!empty($shop))
+        {
+            $data['shop']=$shop->transform();
+        }
         return $data;
     }
 }

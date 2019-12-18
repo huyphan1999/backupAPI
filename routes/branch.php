@@ -28,13 +28,17 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
             'as' => 'branch.del',
             'uses' => 'BranchController@delBranch',
         ]);
-        $api->post('branch/edit', [
-            'as' => 'branch.edit',
-            'uses' => 'BranchController@editBranch',
+        $api->post('branch/update', [
+            'as' => 'branch.update',
+            'uses' => 'BranchController@updateBranch',
         ]);
-        $api->post('branch/view', [
-            'as' => 'branch.view',
-            'uses' => 'BranchController@viewBranch',
+        $api->get('branch/list', [
+            'as' => 'branch.list',
+            'uses' => 'BranchController@listBranch',
+        ]);
+        $api->get('branch/detail', [
+            'as' => 'branch.detail',
+            'uses' => 'BranchController@detailBranch',
         ]);
         $api->get('branch/delete', [
             'as' => 'branch.delete',

@@ -78,20 +78,20 @@ class ShopRepositoryEloquent extends BaseRepository implements ShopRepository
             {
                 foreach($id as $row)
                 {
-                    $user=User::where('shop_id',mongo_id($row->id))->update(['shop_id'=>null]);
-                    $position=Position::where('shop_id',mongo_id($row->id))->update(['shop_id'=>null]);
-                    $dep=Dep::where('shop_id',mongo_id($row->id))->update(['shop_id'=>null]);
-                    $branch=Branch::where('shop_id',mongo_id($row->id))->update(['shop_id'=>null]);
+                    $user=User::where('shop_id',mongo_id($row->id))->delete();
+                    $position=Position::where('shop_id',mongo_id($row->id))->delete();
+                    $dep=Dep::where('shop_id',mongo_id($row->id))->delete();
+                    $branch=Branch::where('shop_id',mongo_id($row->id))->delete();
                     $shop=Shop::where('_id',mongo_id($row->id))->delete();
                 }
 
             }
             else
             {
-                $user=User::where('shop_id',mongo_id($id))->update(['shop_id'=>null]);
-                $position=Position::where('shop_id',mongo_id($id))->update(['shop_id'=>null]);
-                $dep=Dep::where('shop_id',mongo_id($id))->update(['shop_id'=>null]);
-                $branch=Branch::where('shop_id',mongo_id($id))->update(['shop_id'=>null]);
+                $user=User::where('shop_id',mongo_id($id))->delete();
+                $position=Position::where('shop_id',mongo_id($id))->delete();
+                $dep=Dep::where('shop_id',mongo_id($id))->delete();
+                $branch=Branch::where('shop_id',mongo_id($id))->delete();
                 $shop=Shop::where('_id',mongo_id($id))->delete();
             }
         return;

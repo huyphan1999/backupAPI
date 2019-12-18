@@ -68,7 +68,6 @@ class PositionController extends Controller
     public function deletePosition()
     {
         $id=$this->request->get('id');
-        $user=User::where('position_id',mongo_id($id))->update(['position_id'=>null]);
         $deleted_position=Position::where('_id',$id)->delete();
         return ($deleted_position);
     }
