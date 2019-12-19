@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Api\Entities\Branch;
 use App\Api\Entities\Dep;
 use App\Api\Repositories\Contracts\ShiftRepository;
-//use App\Api\Repositories\Contracts\DepRepository;
 
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Auth\AuthManager;
 use Gma\Curl;
-//use App\Api\Entities\Dep;
 use App\Api\Entities\Shift;
 
 //Google firebase
@@ -33,7 +32,7 @@ class ShiftController extends Controller
     /**
      * @var ShopRepository
      */
-
+    protected $dayOfWorkRepository;
 
     protected $auth;
 
@@ -71,10 +70,12 @@ class ShiftController extends Controller
     {
         // Validate Data import.
         $validator = \Validator::make($this->request->all(), [
+
             'dep_name'=>'required',
             'shift_name'=>'required',
-            'time_begin'=>'required|date_format:H:i',
-            'time_end'=>'required|date_format:H:i',
+            'time_begin'=>'required|date_format:G:i',
+            'time_end'=>'required|date_format:G:i',
+            'work_date'=>'required|date_format:d-m-Y',
             'work_day'=>'required',
         ]);
         if ($validator->fails()) {
@@ -88,14 +89,26 @@ class ShiftController extends Controller
         }
 
         $dep_id=mongo_id($depCheck->_id);
+        $branch_id=mongo_id($depCheck->branch_id);
+        $branchCheck=Branch::where(['_id'=>$branch_id])->first();
+        $shop_id=mongo_id($branchCheck->shop_id);
 
+        //tao time
+        $time_begin=$this->request->get('time_begin');
+        $time_end=$this->request->get('time_end');
+        $time=$time_begin.'-'.$time_end;
+        //tao ngay lam
+        $work_date=$this->request->get('work_date');
+        $work_day=$this->request->get('work_day');
+        $day_work=$work_day.', '.$work_date;
         // Tạo shop trước
         $attributes = [
             'shift_name'=>$this->request->get('shift_name'),
-            'time_begin'=>$this->request->get('time_begin'),
-            'time_end'=>$this->request->get('time_end'),
+            'shop_id'=>$shop_id,
+            'branch_id'=>$branch_id,
             'dep_id'=>$dep_id,
-            'work_day'=>$this->request->get('work_day'),
+            'work_date'=>$day_work,
+            'time'=>$time,
         ];
         $shift = $this->shiftRepository->create($attributes);
 
@@ -174,7 +187,17 @@ class ShiftController extends Controller
         // return $this->successRequest($user->transform());
     }
     #endregion
+    public  function listShift(){
+        $shifts=$this->shiftRepository->all();
+        $data=[];
+        foreach($shifts as $shift)
+        {
+            $data[]=$shift->transform();
+        }
 
+
+        return $this->successRequest($data);
+    }
     #region xem ca lam
     public function viewShift()
     {
@@ -201,9 +224,22 @@ class ShiftController extends Controller
 
 
         return $this->successRequest($dep);*/
+//        $shift=$this->shiftRepository->findByField('work_date','Thứ 6, 20-12-2019');
+        $shift=Shift::all()->groupBy('work_date');
+        /*$a=[
 
-        $shift=$this->shiftRepository->getShift(["shift_name"=>$this->request->get('id')]);
-        return $this->successRequest($shift);
+        ];
+        foreach ($shift as $sh){
+            $a[]=$sh->transform();
+        }*/
+        $data=[
+            'data'=>$shift,
+        ];
+
+
+        return $this->successRequest($data);
+
+
 
         // return $this->successRequest($user->transform());
     }

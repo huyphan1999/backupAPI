@@ -38,5 +38,11 @@ class Branch extends Moloquent
 
         return $transformer->transformSelect($this);
     }
-
+    public function shop() {
+        $shop = null;
+        if(!empty($this->shop_id)) {
+            $shop = Shop::where(['_id' => mongo_id($this->shop_id)])->first();
+        }
+        return $shop;
+    }
 }

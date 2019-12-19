@@ -39,4 +39,6 @@ class Shift extends Moloquent
         return $transformer->transformSelect($this);
     }
 
+
+
 }

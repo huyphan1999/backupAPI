@@ -99,7 +99,6 @@ class BranchController extends Controller
             'branchName' => $this->request->get('branchName'),
             'address' => $this->request->get('address'),
             'is_web' => (int)($this->request->get('is_web')),
-            'shop_id'=>mongo_id($shopCheck->_id),
         ];
         $branch = $this->branchRepository->create($attributes);
 
@@ -176,7 +175,16 @@ class BranchController extends Controller
         // return $this->successRequest($user->transform());
     }
     #endregion
-
+    public function listBranch()
+    {
+        $branches=$this->branchRepository->all();
+        $data=[];
+        foreach($branches as $branch)
+        {
+            $data[]=$branch->transform();
+        }
+        return $this->successRequest($data);
+    }
     #region xem chi nhanh
     public function viewBranch()
     {

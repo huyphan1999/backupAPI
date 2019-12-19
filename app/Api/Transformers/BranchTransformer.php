@@ -19,9 +19,16 @@ class BranchTransformer extends TransformerAbstract
      */
     public function transform(Branch $model, string $type = ''){
         $data = [
-            'branchName' => $model->branchName,
+            'id'=>$model->_id,
+            'branch_name' => $model->branch_name,
             'address' => $model->address,
+            'shop'=>[],
         ];
+        $shop=$model->shop();
+        if(!empty($shop))
+        {
+            $data['shop']=$shop->transform();
+        }
         return $data;
     }
 }
