@@ -27,8 +27,8 @@ class EmpshiftCriteria implements CriteriaInterface
     public function apply($model, RepositoryInterface $repository)
     {
         $query = $model->newQuery();
-        if(!empty($this->params['date_checkin'])) {
-            $query->where('date_checkin',$this->params['date_checkin']);
+        if(!empty($this->params['user_id'])) {
+            $query->where('user_id',$this->params['user_id']);
         }
         //Set language
         // $query->where('lang',app('translator')->getLocale());

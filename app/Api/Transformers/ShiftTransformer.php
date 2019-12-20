@@ -20,9 +20,25 @@ class ShiftTransformer extends TransformerAbstract
     public function transform(Shift $model)
     {
         return [
-            'shift_name'         => $model->shift_name,
-            'time_begin'=>$model->time_begin,
-            'time_out'=>$model->time_end
+            'date'=> $model->work_date,
+            'data'=>[
+                'name'=>$model->shift_name,
+                'time'=>$model->time,
+            ],
         ];
+
+
     }
+    /*public function transform(Shift $model)
+    {
+        return [
+                'name'=>$model->shift_name,
+                'time'=>$model->time,
+        ];
+
+
+    }*/
+
+
+
 }

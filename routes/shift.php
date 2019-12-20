@@ -36,6 +36,10 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
             'as' => 'shift.view',
             'uses' => 'ShiftController@viewShift',
         ]);
+        $api->get('shift/list', [
+            'as' => 'shift.list',
+            'uses' => 'ShiftController@listShift',
+        ]);
     });
 
 
