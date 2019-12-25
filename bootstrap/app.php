@@ -180,12 +180,9 @@ $app->group(['namespace' => 'App\Http\Controllers'], function ($app) {
     require __DIR__.'/../routes/student.php';
     require __DIR__.'/../routes/branch.php';
     require __DIR__.'/../routes/department.php';
-<<<<<<< HEAD
     require __DIR__.'/../routes/position.php';
-=======
     require __DIR__.'/../routes/shift.php';
     require __DIR__.'/../routes/empshift.php';
->>>>>>> 4289207273aa9d67b68f6295bdc9b6384e035954
 });
 
 return $app;
