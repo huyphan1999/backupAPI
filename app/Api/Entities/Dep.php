@@ -38,5 +38,12 @@ class Dep extends Moloquent
 
         return $transformer->transformSelect($this);
     }
-
+    public function branch()
+    {
+        $branch=null;
+        if(!empty($this->branch_id)) {
+            $branch = Branch::where(['_id' => $this->branch_id])->first();
+        }
+        return $branch;
+    }
 }

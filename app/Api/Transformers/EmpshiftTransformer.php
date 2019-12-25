@@ -20,9 +20,8 @@ class EmpshiftTransformer extends TransformerAbstract
     public function transform(Empshift $model)
     {
         return [
-            'date_checkin'=>$model->date_checkin,
-            'time_in'=>$model->time_in,
-            'time_out'=>$model->time_out,
+            'user_id'=>$model->user_id,
+            'shift_id'=>$model->shift_id,
         ];
     }
 }

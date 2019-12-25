@@ -28,5 +28,13 @@ class Position extends Moloquent
 
         return $transformer->transform($this);
     }
+    public function shop()
+    {
+        $shop = null;
+        if(!empty($this->shop_id)) {
+            $shop = Shop::where(['_id' => mongo_id($this->shop_id)])->first();
+        }
+        return $shop;
+    }
 
 }
