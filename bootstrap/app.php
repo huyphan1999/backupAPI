@@ -183,6 +183,7 @@ $app->group(['namespace' => 'App\Http\Controllers'], function ($app) {
     require __DIR__.'/../routes/position.php';
     require __DIR__.'/../routes/shift.php';
     require __DIR__.'/../routes/empshift.php';
+    require __DIR__.'/../routes/empclock.php';
 });
 
 return $app;

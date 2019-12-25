@@ -2,12 +2,15 @@
 
 
 namespace App\Http\Controllers\Api\V1;
+
+
+use Carbon\Carbon;
 use App\Api\Entities\Shift;
 use App\Api\Repositories\Contracts\EmpshiftRepository;
 use App\Api\Repositories\Contracts\UserRepository;
 use App\Api\Repositories\Contracts\EmpClockRepository;
+
 use App\Http\Controllers\Controller;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Auth\AuthManager;
@@ -18,59 +21,91 @@ use App\Api\Entities\EmpClock;
 //Google firebase
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
-use Firebase\Auth\Token\Exception\InvalidToken;
-
-use Illuminate\Support\Facades\Auth;
-use Symfony\Component\Yaml\Tests\B;
 
 class EmpClockController extends Controller
 {
     protected $empshiftRepository;
 
     protected  $userRepository;
-
-    protected  $empclockRepository;
+    protected $empclockRepository;
 
     protected $auth;
 
     protected $request;
-
-    public function __construct(
-        EmpshiftRepository $empshiftRepository,
-        EmpClockRepository $empClockRepository,
-        UserRepository $userRepository,
-        AuthManager $auth,
-        Request $request
-    ) {
-        $this->empshiftRepository = $empshiftRepository;
-        $this->userRepository=$userRepository;
+    public function __construct(  AuthManager $auth,
+                                  Request $request,
+                                  EmpClockRepository $empClockRepository)
+    {
         $this->request = $request;
-        $this->empclockRepository=$empClockRepository;
         $this->auth = $auth;
+        $this->empclockRepository=$empClockRepository;
         parent::__construct();
     }
+
     public function TimeKeeping()
     {
-        dd('asd');
         $user=$this->user();
         $shift_id=$this->request->get('shift_id');
         //Lấy thời gian lúc nhân viên bấm
-        $time=Carbon::now;
-        dd('asd');
-        $shift=EmpShift::where(['shift_id'=>mongo_id($shift_id),'user_id'=>$user->_id]);
-        if($shift->clicked==0){
-            $attribute=[
-                'time_in'=>$time,
-                'time_out'=>null
-            ];
-        }
-        if($shift->clicked==1)
+        $time=Carbon::now();
+        $shift=EmpShift::where(['shift_id'=>($shift_id),'user_id'=>($user->_id)])->first();
+//        $emp_clock=$this->empclockRepository->findWhere([
+//            'shift_id'=>mongo_id($shift_id),'user_id'=>mongo_id($user->_id)
+//        ])->first();
+//        dd($emp_clock);
+//        $emp_clock=EmpClock::where(['shift_id'=>($shift_id),'user_id'=>($user->_id)])->first();
+        switch($shift->clicked)
         {
-            $attribute=[
-                'time_out'=>$time
-            ];
+            case 0:
+            {
+                $attribute=[
+                    'user_id'=>$user->_id,
+                    'shift_id'=>$shift_id,
+                    'time_in'=>$time,
+                ];
+                $shift->clicked=1;
+                $shift->save();
+                $emp_clock=EmpClock::updateOrCreate([
+                    'user_id'=>$user->_id,
+                    'shift_id'=>$shift_id,
+                ],[
+                    'time_in'=>$time,
+                ]);
+                break;
+            }
+            case 1:
+            {
+                $attribute=[
+                    'user_id'=>$user->_id,
+                    'shift_id'=>$shift_id,
+                    'time_out'=>$time
+                ];
+                $emp_clock=EmpClock::updateOrCreate([
+                    'user_id'=>$user->_id,
+                    'shift_id'=>$shift_id,
+                ],[
+                    'time_out'=>$time,
+                ]);
+                $shift->clicked=0;
+                $shift->save();
+                break;
+            }
         }
-//        $emp_clock=$this->empclockRepository->create($attribute);
-        return $this->successRequest($shift);
+//        if(!empty($emp_clock))
+//        {
+//            $emp_clock=$this->empclockRepository->create($attribute);
+//        }
+//        else{
+//            $emp_clock=$this->empclockRepository->update($attribute,$user->_id);
+//        }
+//        $emp_clock=$this->empclockRepository->updateOrCreate($attribute,['user_id'=>$user->_id,'shift_id'=>$shift_id]);
+//        $emp_clock=EmpClock::updateOrCreate([
+//            'user_id'=>$user->_id,
+//            'shift_id'=>$shift_id,
+//        ],[
+//           ''
+//        ]);
+        return $this->successRequest($emp_clock);
+
     }
 }

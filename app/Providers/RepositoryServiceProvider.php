@@ -16,7 +16,7 @@ class RepositoryServiceProvider extends ServiceProvider
             'Branch',
             'Dep',
             'Position',
-
+            'EmpClock',
             'Shift',
             'Empshift'
         );

@@ -12,5 +12,5 @@ return [
     |
     */
 	'locale' => 'vi',
-
+    App\Providers\RepositoriesServiceProvider::class
 ];
