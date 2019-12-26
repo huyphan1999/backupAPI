@@ -21,6 +21,7 @@ class ShopTransformer extends TransformerAbstract
     public function transform(Shop $model, string $type = ''){
         $data = [
             'id' => $model->_id,
+            'shop_name'=>$model->shop_name,
             'name' => $model->name,
         ];
         return $data;

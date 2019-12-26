@@ -146,6 +146,32 @@ class BranchController extends Controller
         }
         return $this->successRequest($data);
     }
+
+    public function list()
+    {
+        $is_all = (bool)$this->request->get('is_all');
+        $params = [];
+        $is_detail = false;
+        if (!empty($this->request->get('id'))) {
+            $is_detail = true;
+            $params['is_detail'] = 1;
+            $params['id'] = $this->request->get('id');
+        } else {
+            $params = ['is_paginate' => !$is_all];            
+            }
+        $branches = $this->branchRepository->getListBranch($params, 30);
+        if ($is_detail) {
+            return $this->successRequest($branches->transform());
+        }
+        $data = [];
+        if (!empty($branches)) {
+            foreach ($branches as $branch) {
+                $data[] = $branch->transform();
+            }
+        }
+        return $this->successRequest($data);
+    }
+
     #region xem chi nhanh
     public function detailBranch()
     {

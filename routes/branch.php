@@ -44,6 +44,10 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
             'as' => 'branch.list',
             'uses' => 'BranchController@listBranch',
         ]);
+        $api->get('branch/list1', [
+            'as' => 'branch.list1',
+            'uses' => 'BranchController@list',
+        ]);
     });
 
 

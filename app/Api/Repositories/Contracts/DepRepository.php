@@ -13,4 +13,5 @@ interface DepRepository extends RepositoryInterface
 //    public function deleteDep($id,$limit =0);
 
     public function getDep($params = [],$limit = 0);
+    public function getListDep($params = [],$limit = 0);
 }

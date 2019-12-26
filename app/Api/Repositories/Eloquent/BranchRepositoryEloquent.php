@@ -47,4 +47,21 @@ class BranchRepositoryEloquent extends BaseRepository implements BranchRepositor
         $this->popCriteria(new BranchCriteria($params));
         return $item;
     }
+
+    public function getListBranch($params = [],$limit = 0){
+        $this->pushCriteria(new BranchCriteria($params));
+        if(!empty($params['is_detail'])) {
+            $item = $this->get()->first();
+        } elseif(!empty($params['is_paginate'])) {
+            if($limit != 0) {
+                $item = $this->paginate($limit); 
+            } else {
+                $item = $this->paginate(); 
+            }
+        } else {
+            $item = $this->all(); 
+        }   
+        $this->popCriteria(new BranchCriteria($params));
+        return $item;
+    }
 }

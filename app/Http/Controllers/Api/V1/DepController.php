@@ -184,6 +184,31 @@ class DepController extends Controller
     }
     #endregion
     
+    public function list()
+    {
+        $is_all = (bool)$this->request->get('is_all');
+        $params = [];
+        $is_detail = false;
+        if (!empty($this->request->get('id'))) {
+            $is_detail = true;
+            $params['is_detail'] = 1;
+            $params['id'] = $this->request->get('id');
+        } else {
+            $params = ['is_paginate' => !$is_all];            
+            }
+        $deps = $this->depRepository->getListDep($params, 30);
+        if ($is_detail) {
+            return $this->successRequest($deps->transform());
+        }
+        $data = [];
+        if (!empty($deps)) {
+            foreach ($deps as $dep) {
+                $data[] = $dep->transform();
+            }
+        }
+        return $this->successRequest($data);
+    }
+
     public function deleteDep()
     {
         $id=$this->request->get('id');
