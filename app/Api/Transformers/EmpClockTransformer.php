@@ -19,13 +19,24 @@ class EmpClockTransformer extends TransformerAbstract
      */
     public function transform(EmpClock $model)
     {
-        return [
-            'id'         => $model->_id,
+        $data= [
+            'user_id'=>$model->user_id,
+            'shift'=>[
 
-            
-
-            'created_at' => $model->created_at,
-            'updated_at' => $model->updated_at
+            ],
+            'time_in'=>$model->time_in,
+            'time_out'=>$model->time_out,
         ];
+        // $user=$model->user();
+        // if(!empty($user))
+        // {
+        //     $data['user']=$user->transform();
+        // }
+        $shift=$model->shift();
+        if(!empty($shift))
+        {
+            $data['shift']=$shift->transform();
+        }
+        return $data;
     }
 }

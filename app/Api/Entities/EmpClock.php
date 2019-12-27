@@ -28,5 +28,19 @@ class EmpClock extends Moloquent
 
         return $transformer->transform($this);
     }
+    public function user() {
+        $user = null;
+        if(!empty($this->user_id)) {
+            $user = User::where(['_id' => mongo_id($this->user_id)])->first();
+        }
+        return $user;
+    }
+    public function shift() {
+        $shift = null;
+        if(!empty($this->shift_id)) {
+            $shift = Shift::where(['_id' => mongo_id($this->shift_id)])->first();
+        }
+        return $shift;
+    }
 
 }

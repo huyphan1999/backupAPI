@@ -18,7 +18,8 @@ class RepositoryServiceProvider extends ServiceProvider
             'Position',
             'EmpClock',
             'Shift',
-            'Empshift'
+            'Empshift',
+            'Salary'
         );
 
         foreach ($models as $model) {
