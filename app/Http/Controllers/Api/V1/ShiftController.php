@@ -74,8 +74,8 @@ class ShiftController extends Controller
             'dep_id'=>'nullable',
             'position_id'=>'nullable',
             'shift_name'=>'required',
-            'time_begin'=>'required|date_format:H:i',
-            'time_end'=>'required|date_format:H:i',
+            'time_begin'=>'required|date_format:H:i:s',
+            'time_end'=>'required|date_format:H:i:s',
             'work_date'=>'required|date_format:d-m-Y',
         ]);
         if ($validator->fails()) {
@@ -182,58 +182,56 @@ class ShiftController extends Controller
     #endregion
 
     #region xem ca lam
-    public function viewShift()
-    {
-        // Validate Data import.
-        /*$validator = \Validator::make($this->request->all(), [
-            'branchname'=>'required',
-        ]);
-        if ($validator->fails()) {
-            return $this->errorBadRequest($validator->messages()->toArray());
-        }
+//     public function viewShift()
+//     {
+//         // Validate Data import.
+//         /*$validator = \Validator::make($this->request->all(), [
+//             'branchname'=>'required',
+//         ]);
+//         if ($validator->fails()) {
+//             return $this->errorBadRequest($validator->messages()->toArray());
+//         }
 
-        $branchname=$this->request->get('branchname');
-        // Kiểm tra xem email đã được đăng ký trước đó chưa
+//         $branchname=$this->request->get('branchname');
+//         // Kiểm tra xem email đã được đăng ký trước đó chưa
 
-        $branchCheck=Branch::where(['branchName'=>$branchname])->first();
-        if(empty($branchCheck)) {
-            return $this->errorBadRequest(trans('Chi nhánh không có sẵn'));
-        }
+//         $branchCheck=Branch::where(['branchName'=>$branchname])->first();
+//         if(empty($branchCheck)) {
+//             return $this->errorBadRequest(trans('Chi nhánh không có sẵn'));
+//         }
 
-        $branchid=mongo_id($branchCheck->_id);
+//         $branchid=mongo_id($branchCheck->_id);
 
-        $dep = Dep::where(['branch_id'=>$branchid])->paginate();
-
-
-
-        return $this->successRequest($dep);*/
-//        $shift=$this->shiftRepository->findByField('work_date','Thứ 6, 20-12-2019');
-        $shift=Shift::all()->groupBy('work_date');
-        /*$a=[
-
-        ];
-        foreach ($shift as $sh){
-            $a[]=$sh->transform();
-        }*/
-        $data=[
-            'data'=>$shift,
-        ];
-
-
-        return $this->successRequest($data);
+//         $dep = Dep::where(['branch_id'=>$branchid])->paginate();
 
 
 
-        // return $this->successRequest($user->transform());
-    }
+//         return $this->successRequest($dep);*/
+// //        $shift=$this->shiftRepository->findByField('work_date','Thứ 6, 20-12-2019');
+//         $shifts=Shift::all()->groupBy('work_date');
+//         $data=[
+
+//         ];
+//         foreach ($shifts as $shift){
+//             $data[]=$shift->transform();
+//         }
+              
+
+
+//         return $this->successRequest($data);
+
+
+
+//         // return $this->successRequest($user->transform());
+//     }
     #endregion
     public  function listShift(){
         $shifts=$this->shiftRepository->all();
-//        $data=[];
-//        foreach($shifts as $shift)
-//        {
-//            $data[]=$shift->transform();
-//        }
-        return $this->successRequest($shifts);
+       $data=[];
+       foreach($shifts as $shift)
+       {
+           $data[]=$shift->transform();
+       }
+        return $this->successRequest($data);
     }
 }

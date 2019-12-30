@@ -131,7 +131,7 @@ class EmpshiftController extends Controller
 
 
         return $this->successRequest($dep);*/
-
+        $user = Auth::user();
         $empshift=$this->empshiftRepository->getEmpshift(["user_id"=>$this->request->get('id')]);
         return $this->successRequest($empshift);
 

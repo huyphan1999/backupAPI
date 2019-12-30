@@ -32,7 +32,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
             'as' => 'empshift.edit',
             'uses' => 'EmpshiftController@editEF',
         ]);
-        $api->post('empshift/view', [
+        $api->get('empshift/view', [
             'as' => 'empshift.view',
             'uses' => 'EmpshiftController@viewEF',
         ]);

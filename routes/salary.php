@@ -19,18 +19,15 @@ $api = app('Dingo\Api\Routing\Router');
 // v1 version API
 $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($api) {
     $api->group(['middleware' => ['api.locale']], function ($api) {
-        //chấm công
-        $api->post('empclock/timekeeping', [
-            'as' => 'empshift.timekeeeping',
-            'uses' => 'EmpClockController@TimeKeeping',
+        //Login        
+        $api->get('salary/register', [
+            'as' => 'salary.register',
+            'uses' => 'SalaryController@createSalary',
         ]);
-        $api->post('empclock/timein', [
-            'as' => 'empshift.timein',
-            'uses' => 'EmpClockController@TimeIn',
-        ]);
-        $api->post('empclock/timeout', [
-            'as' => 'empshift.timeout',
-            'uses' => 'EmpClockController@TimeOut',
+        $api->get('salary/view', [
+            'as' => 'salary.view',
+            'uses' => 'SalaryController@viewSalary',
         ]);
     });
+
 });
