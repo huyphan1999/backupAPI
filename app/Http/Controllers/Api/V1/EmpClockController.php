@@ -115,11 +115,16 @@ class EmpClockController extends Controller
         $shift_id=$this->request->get('shift_id');
         //Lấy thời gian lúc nhân viên bấm
         $time=Carbon::now('Asia/Ho_Chi_Minh');
+<<<<<<< HEAD
+=======
+        $shift=EmpShift::where(['shift_id'=>($shift_id),'user_id'=>($user->_id)])->first();
+>>>>>>> 67ff75c577e71488faeaca240ea2a11a83b7b8e1
 //        $emp_clock=$this->empclockRepository->findWhere([
 //            'shift_id'=>mongo_id($shift_id),'user_id'=>mongo_id($user->_id)
 //        ])->first();
 //        dd($emp_clock);
 //        $emp_clock=EmpClock::where(['shift_id'=>($shift_id),'user_id'=>($user->_id)])->first();
+<<<<<<< HEAD
         $status=0;
 
         //ham ktra xem da vao ca hay chua
@@ -145,6 +150,16 @@ class EmpClockController extends Controller
             $emp_clock=$this->empclockRepository->update($attribute,$clock_check->_id);
         }
         
+=======
+        
+        $attribute=[
+            'user_id'=>$user->_id,
+            'shift_id'=>$shift_id,
+            'time_in'=>$time->toDateTimeString(),
+            'time_out'=>NULL,
+        ];
+        $emp_clock=$this->empclockRepository->create($attribute);
+>>>>>>> 67ff75c577e71488faeaca240ea2a11a83b7b8e1
         return $this->successRequest($emp_clock->transform());
 
     }
@@ -154,7 +169,12 @@ class EmpClockController extends Controller
         $user=$this->user();
         $shift_id=$this->request->get('shift_id');
         //Lấy thời gian lúc nhân viên bấm
+<<<<<<< HEAD
         $time=Carbon::now();
+=======
+        Carbon::resetToStringFormat();
+        $time=Carbon::now('Asia/Ho_Chi_Minh');
+>>>>>>> 67ff75c577e71488faeaca240ea2a11a83b7b8e1
 
         
         $empclock=EmpClock::where(['shift_id'=>($shift_id),'user_id'=>($user->_id),'time_out'=>NULL])->first();
@@ -171,6 +191,7 @@ class EmpClockController extends Controller
         return $this->successRequest($emp_clock->transform());
 
     }
+<<<<<<< HEAD
 
     public function Time()
     {
@@ -195,4 +216,6 @@ class EmpClockController extends Controller
         $emp_clock=$this->empclockRepository->update($attribute,$empclock->_id);
         return $this->successRequest($emp_clock->transform());
     }
+=======
+>>>>>>> 67ff75c577e71488faeaca240ea2a11a83b7b8e1
 }

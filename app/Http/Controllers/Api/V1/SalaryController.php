@@ -61,6 +61,7 @@ class SalaryController extends Controller
 
     #region tao ca lam
     
+<<<<<<< HEAD
     public function createSalary()
     {
         $user=$this->user();
@@ -69,11 +70,21 @@ class SalaryController extends Controller
         // $shift_id="5e02e8fb0bcc9847fd2ef077";
         //$shift=EmpClock::where(['shift_id'=>($shift_id),'user_id'=>($user->_id)])->first();
         $shifts=EmpClock::where(['user_id'=>($user->_id)])->get();
+=======
+    public function viewSalary()
+    {
+        // $user=$this->user();
+        // $shift_id=$this->request->get('shift_id');
+        $user="5df9f0e70bcc9818fe0b729a";
+        $shift_id="5e02e8fb0bcc9847fd2ef077";
+        $shift=EmpClock::where(['shift_id'=>($shift_id),'user_id'=>($user)])->first();
+>>>>>>> 67ff75c577e71488faeaca240ea2a11a83b7b8e1
 //        $emp_clock=$this->empclockRepository->findWhere([
 //            'shift_id'=>mongo_id($shift_id),'user_id'=>mongo_id($user->_id)
 //        ])->first();
 //        dd($emp_clock);
 //        $emp_clock=EmpClock::where(['shift_id'=>($shift_id),'user_id'=>($user->_id)])->first();
+<<<<<<< HEAD
         $work_sals = [];
         foreach($shifts as $shift){
             $time_in=$shift->time_in;
@@ -162,4 +173,35 @@ class SalaryController extends Controller
         // dd($user);
         return $this->successRequest($user);
     }
+=======
+        
+        $time_in=$shift->time_in;
+        $time_out=$shift->time_out;
+        $timein=Carbon::parse($time_in);
+        $timeout=Carbon::parse($time_out);
+        // dd($timein);
+        $work_time=$timeout->diffInSeconds($timein);
+        $salary=($work_time/3600)*30000;
+        // dd($salary);
+        // dd($work_time);
+        $attribute=[
+            'user_id'=>$user,
+            'work_time'=>$work_time,
+            'salary'=>$salary,
+        ];
+        $work_sal=$this->salaryRepository->create($attribute);
+        return $this->successRequest($work_sal->transform());
+
+    }
+
+    // public  function viewSalary(){
+    //    $salarys=$this->salaryRepository->all();
+    //    $data=[];
+    //    foreach($salarys as $salary)
+    //    {
+    //        $data[]=$salary->transform();
+    //    }
+    //     return $this->successRequest($data);
+    // }
+>>>>>>> 67ff75c577e71488faeaca240ea2a11a83b7b8e1
 }
