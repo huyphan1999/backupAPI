@@ -41,11 +41,20 @@ class EmpClockTransformer extends TransformerAbstract
     // }
     public function transform(EmpClock $model)
     {
+        $shift=$model->shift_id;
+               
+        
         $data= [
+            'data'=>[],
             'status'=>$model->status
         ];
-        
-        
+
+        $shift=$model->shift();
+        if(!empty($shift))
+        {
+            $data['data']=$shift->transform();
+        }
         return $data;
+
     }
 }
