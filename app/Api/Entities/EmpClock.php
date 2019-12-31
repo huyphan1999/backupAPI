@@ -12,7 +12,7 @@ class EmpClock extends Moloquent
 
 	protected $collection = 'employee_clocks';
 
-    protected $fillable = [];
+    protected $guarded = [];
 
     protected $hidden = ['created_at','updated_at','deleted_at'];
 
