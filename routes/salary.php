@@ -20,15 +20,13 @@ $api = app('Dingo\Api\Routing\Router');
 $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($api) {
     $api->group(['middleware' => ['api.locale']], function ($api) {
         //Login        
-<<<<<<< HEAD
+
         $api->get('salary/register', [
             'as' => 'salary.register',
             'uses' => 'SalaryController@createSalary',
         ]);
-        $api->get('salary/view', [
-=======
+//        $api->get('salary/view', [
         $api->post('salary/view', [
->>>>>>> 67ff75c577e71488faeaca240ea2a11a83b7b8e1
             'as' => 'salary.view',
             'uses' => 'SalaryController@viewSalary',
         ]);
