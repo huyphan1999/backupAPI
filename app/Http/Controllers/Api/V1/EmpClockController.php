@@ -126,6 +126,7 @@ class EmpClockController extends Controller
         
         $clock_check=EmpClock::where(['shift_id'=>($shift_id),'user_id'=>($user->_id),'status'=>1])->first();
 
+
         if(empty($clock_check)){
             $status=1;
             $attribute=[
@@ -138,11 +139,12 @@ class EmpClockController extends Controller
             $emp_clock=$this->empclockRepository->create($attribute);
         }
         else{
-            $attribute=[
+            $attribute=[                
                 'time_out'=>$time->toDateTimeString(),
                 'status'=>$status,
             ];
             $emp_clock=$this->empclockRepository->update($attribute,$clock_check->_id);
+            // $emp_clock=$this->empclockRepository->create($attribute);
         }
         
         return $this->successRequest($emp_clock->transform());

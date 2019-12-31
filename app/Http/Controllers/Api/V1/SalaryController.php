@@ -68,7 +68,10 @@ class SalaryController extends Controller
         // $user="5df9f0e70bcc9818fe0b729a";
         // $shift_id="5e02e8fb0bcc9847fd2ef077";
         //$shift=EmpClock::where(['shift_id'=>($shift_id),'user_id'=>($user->_id)])->first();
-        $shifts=EmpClock::where(['user_id'=>($user->_id)])->get();
+        $shifts_in=EmpClock::where(['user_id'=>($user->_id),'status'=>1])->get();
+        
+        $shifts_out=EmpClock::where(['user_id'=>($user->_id),'status'=>0])->get();
+        dd($shifts_out[0]['time_out']);
         // $shift_id=$shifts[]->shift_id;
         // dd($shift_id);
 //        $emp_clock=$this->empclockRepository->findWhere([
