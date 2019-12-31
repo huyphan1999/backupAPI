@@ -41,6 +41,7 @@ class EmpClockTransformer extends TransformerAbstract
     // }
     public function transform(EmpClock $model)
     {
+<<<<<<< HEAD
         $shift=$model->shift_id;
                
         
@@ -56,5 +57,26 @@ class EmpClockTransformer extends TransformerAbstract
         }
         return $data;
 
+=======
+        $data= [
+            'user_id'=>$model->user_id,
+            'shift'=>[
+
+            ],
+            'time_in'=>$model->time_in,
+            'time_out'=>$model->time_out,
+        ];
+        // $user=$model->user();
+        // if(!empty($user))
+        // {
+        //     $data['user']=$user->transform();
+        // }
+        $shift=$model->shift();
+        if(!empty($shift))
+        {
+            $data['shift']=$shift->transform();
+        }
+        return $data;
+>>>>>>> 67ff75c577e71488faeaca240ea2a11a83b7b8e1
     }
 }
