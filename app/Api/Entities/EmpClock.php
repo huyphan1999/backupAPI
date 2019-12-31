@@ -11,7 +11,6 @@ class EmpClock extends Moloquent
 	use SoftDeletes;
 
 	protected $collection = 'employee_clocks';
-	protected $collection = '';
 
     protected $fillable = [];
 
