@@ -69,17 +69,21 @@ class SalaryController extends Controller
         // $shift_id="5e02e8fb0bcc9847fd2ef077";
         //$shift=EmpClock::where(['shift_id'=>($shift_id),'user_id'=>($user->_id)])->first();
         $shifts=EmpClock::where(['user_id'=>($user->_id)])->get();
+        // $shift_id=$shifts[]->shift_id;
+        // dd($shift_id);
 //        $emp_clock=$this->empclockRepository->findWhere([
 //            'shift_id'=>mongo_id($shift_id),'user_id'=>mongo_id($user->_id)
 //        ])->first();
 //        dd($emp_clock);
 //        $emp_clock=EmpClock::where(['shift_id'=>($shift_id),'user_id'=>($user->_id)])->first();
+        
         $work_sals = [];
         foreach($shifts as $shift){
             $time_in=$shift->time_in;
             $time_out=$shift->time_out;
             $timein=Carbon::parse($time_in);
             $timeout=Carbon::parse($time_out);
+            
             // dd($timein);
             $work_time=$timeout->diffInSeconds($timein);
             $salary=($work_time/3600)*30000;
@@ -91,9 +95,10 @@ class SalaryController extends Controller
                 'salary'=>$salary,
             ];
             $work_sal=$this->salaryRepository->create($attribute);
-            // $work_sals[] = $work_sal->transform();
+            
+            $work_sals[] = $work_sal->transform();
         }
-        return $this->successRequest();
+        return $this->successRequest($work_sals);
 
     }
 
