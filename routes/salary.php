@@ -22,7 +22,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
         //Login        
         $api->get('salary/register', [
             'as' => 'salary.register',
-            'uses' => 'SalaryController@createSalary',
+            'uses' => 'SalaryController@create',
         ]);
         $api->get('salary/view', [
             'as' => 'salary.view',

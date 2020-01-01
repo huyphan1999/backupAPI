@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-
+use Carbon\CarbonPeriod;
 use Carbon\Carbon;
 use App\Api\Entities\Shift;
 use App\Api\Repositories\Contracts\EmpshiftRepository;
@@ -64,14 +64,11 @@ class SalaryController extends Controller
     public function createSalary()
     {
         $user=$this->user();
-        //$shift_id=$this->request->get('shift_id');
+        $shift_id=$this->request->get('shift_id');
         // $user="5df9f0e70bcc9818fe0b729a";
         // $shift_id="5e02e8fb0bcc9847fd2ef077";
         //$shift=EmpClock::where(['shift_id'=>($shift_id),'user_id'=>($user->_id)])->first();
-        $shifts_in=EmpClock::where(['user_id'=>($user->_id),'status'=>1])->get();
-        
-        $shifts_out=EmpClock::where(['user_id'=>($user->_id),'status'=>0])->get();
-        dd($shifts_out[0]['time_out']);
+        $shifts=EmpClock::where(['user_id'=>($user->_id),'shift_id'=>$shift_id])->get();
         // $shift_id=$shifts[]->shift_id;
         // dd($shift_id);
 //        $emp_clock=$this->empclockRepository->findWhere([
@@ -86,6 +83,7 @@ class SalaryController extends Controller
             $time_out=$shift->time_out;
             $timein=Carbon::parse($time_in);
             $timeout=Carbon::parse($time_out);
+            // dd($timeout);
             
             // dd($timein);
             $work_time=$timeout->diffInSeconds($timein);
@@ -106,10 +104,25 @@ class SalaryController extends Controller
     }
 
     public  function viewSalary(){         
-        
+        $hour=8;
+        $minute=30;
+        $month=Carbon::now();        
+        $start=$month->startOfMonth();    
+        $end=$month->endOfMonth();
+
+        dd($start);    
+    //   $end=$month->endOfMonth();
+        // $period=CarbonPeriod::create($start,$end);
+        // $dates=[];
+        // foreach($period as $day)
+        // {
+        //     $dates[]=$day->format('m-d');
+        // }
+        // dd($start);
         
 
         $user=$this->user();
+        
         $salarys=Salary::where(['user_id'=>($user->_id)])->get();
         //  $salarys=Salary::select('user_id','SUM(work_time) as work_time','SUM(salary) as salary')->get();
         // $salarys=Salary::select('user_id','work_time','salary')->get();
