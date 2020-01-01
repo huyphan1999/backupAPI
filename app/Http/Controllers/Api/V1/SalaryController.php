@@ -61,7 +61,7 @@ class SalaryController extends Controller
 
     #region tao ca lam
     
-    public function createSalary()
+    public function create()
     {
         $user=$this->user();
         $shift_id=$this->request->get('shift_id');
@@ -104,21 +104,7 @@ class SalaryController extends Controller
     }
 
     public  function viewSalary(){         
-        $hour=8;
-        $minute=30;
-        $month=Carbon::now();        
-        $start=$month->startOfMonth();    
-        $end=$month->endOfMonth();
-
-        dd($start);    
-    //   $end=$month->endOfMonth();
-        // $period=CarbonPeriod::create($start,$end);
-        // $dates=[];
-        // foreach($period as $day)
-        // {
-        //     $dates[]=$day->format('m-d');
-        // }
-        // dd($start);
+        
         
 
         $user=$this->user();
