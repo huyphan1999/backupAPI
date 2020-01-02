@@ -39,30 +39,12 @@ class EmpClockTransformer extends TransformerAbstract
     //     }
     //     return $data;
     // }
-    public function transform(EmpClock $model)
+    public function transform(EmpClock $model,$type='')
     {
-<<<<<<< HEAD
-        $shift=$model->shift_id;
-               
-        
-        $data= [
-            'data'=>[],
-            'status'=>$model->status
-        ];
-
-        $shift=$model->shift();
-        if(!empty($shift))
-        {
-            $data['data']=$shift->transform();
-        }
-        return $data;
-
-=======
         $data= [
             'user_id'=>$model->user_id,
-            'shift'=>[
-
-            ],
+            'shift_id'=>$model->shift_id,
+            'shift'=>[],
             'time_in'=>$model->time_in,
             'time_out'=>$model->time_out,
         ];
@@ -76,7 +58,10 @@ class EmpClockTransformer extends TransformerAbstract
         {
             $data['shift']=$shift->transform();
         }
+        if($type=='for-calculating-salary')
+        {
+            $data['shift']=$shift->transform('for-calculating-salary');
+        }
         return $data;
->>>>>>> 67ff75c577e71488faeaca240ea2a11a83b7b8e1
     }
 }

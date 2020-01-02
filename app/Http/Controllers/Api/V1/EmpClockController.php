@@ -9,7 +9,7 @@ use App\Api\Entities\Shift;
 use App\Api\Repositories\Contracts\EmpshiftRepository;
 use App\Api\Repositories\Contracts\UserRepository;
 use App\Api\Repositories\Contracts\EmpClockRepository;
-
+use App\Api\Repositories\Contracts\SalaryRepository;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -28,17 +28,19 @@ class EmpClockController extends Controller
 
     protected  $userRepository;
     protected $empclockRepository;
-
+    protected $salaryRepository;
     protected $auth;
 
     protected $request;
     public function __construct(  AuthManager $auth,
                                   Request $request,
-                                  EmpClockRepository $empClockRepository)
+                                  EmpClockRepository $empClockRepository,
+                                  SalaryRepository $salaryRepository)
     {
         $this->request = $request;
         $this->auth = $auth;
         $this->empclockRepository=$empClockRepository;
+        $this->salaryRepository=$salaryRepository;
         parent::__construct();
     }
 
@@ -120,19 +122,18 @@ class EmpClockController extends Controller
 //        ])->first();
 //        dd($emp_clock);
 //        $emp_clock=EmpClock::where(['shift_id'=>($shift_id),'user_id'=>($user->_id)])->first();
+        //Nếu nhân viên chưa chấm công
         $status=0;
 
         //ham ktra xem da vao ca hay chua
         
         $clock_check=EmpClock::where(['shift_id'=>($shift_id),'user_id'=>($user->_id),'status'=>1])->first();
-
-
         if(empty($clock_check)){
             $status=1;
             $attribute=[
                 'user_id'=>$user->_id,
                 'shift_id'=>$shift_id,
-                'time_in'=>$time->toDateTimeString(),
+                'time_in'=>$time,
                 'time_out'=>NULL,
                 'status'=>$status,
             ];
@@ -140,15 +141,17 @@ class EmpClockController extends Controller
         }
         else{
             $attribute=[                
-                'time_out'=>$time->toDateTimeString(),
+                'time_out'=>$time,
                 'status'=>$status,
             ];
             $emp_clock=$this->empclockRepository->update($attribute,$clock_check->_id);
+            //tạo giờ công
+            $salary_attribute=$this->empclockRepository->createSalary($emp_clock);
+            //tạo record trong collection work_salary
+            $create_salary=$this->salaryRepository->create($salary_attribute);
             // $emp_clock=$this->empclockRepository->create($attribute);
         }
-        
-        return $this->successRequest($emp_clock->transform());
-
+        return $this->successRequest($emp_clock);
     }
 
 //     public function TimeOut()
@@ -157,8 +160,6 @@ class EmpClockController extends Controller
 //         $shift_id=$this->request->get('shift_id');
 //         //Lấy thời gian lúc nhân viên bấm
 //         $time=Carbon::now();
-
-        
 //         $empclock=EmpClock::where(['shift_id'=>($shift_id),'user_id'=>($user->_id),'time_out'=>NULL])->first();
 // //        $emp_clock=$this->empclockRepository->findWhere([
 // //            'shift_id'=>mongo_id($shift_id),'user_id'=>mongo_id($user->_id)

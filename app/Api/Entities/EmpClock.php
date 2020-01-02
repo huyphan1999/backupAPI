@@ -11,23 +11,24 @@ class EmpClock extends Moloquent
 	use SoftDeletes;
 
 	protected $collection = 'employee_clocks';
-	protected $collection = '';
 
-    protected $fillable = [];
+    protected $guarded = [];
 
     protected $hidden = ['created_at','updated_at','deleted_at'];
 
     protected $dates = [
+        'time_in',
+        'time_out',
         'created_at',
         'updated_at',
         'deleted_at'
     ];
 
-    public function transform()
+    public function transform($type='')
     {
         $transformer = new EmpClockTransformer();
 
-        return $transformer->transform($this);
+        return $transformer->transform($this,$type);
     }
     public function user() {
         $user = null;

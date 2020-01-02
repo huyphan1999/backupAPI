@@ -61,14 +61,14 @@ class SalaryController extends Controller
 
     #region tao ca lam
     
-    public function createSalary()
+    public function createSalary(EmpClock $empClock)
     {
-        $user=$this->user();
-        $shift_id=$this->request->get('shift_id');
-        // $user="5df9f0e70bcc9818fe0b729a";
-        // $shift_id="5e02e8fb0bcc9847fd2ef077";
-        //$shift=EmpClock::where(['shift_id'=>($shift_id),'user_id'=>($user->_id)])->first();
-        $shifts=EmpClock::where(['user_id'=>($user->_id),'shift_id'=>$shift_id])->get();
+//        $user=$this->user();
+//        $shift_id=$this->request->get('shift_id');
+//        // $user="5df9f0e70bcc9818fe0b729a";
+//        // $shift_id="5e02e8fb0bcc9847fd2ef077";
+//        //$shift=EmpClock::where(['shift_id'=>($shift_id),'user_id'=>($user->_id)])->first();
+//        $shifts=EmpClock::where(['user_id'=>($user->_id),'shift_id'=>$shift_id])->get();
         // $shift_id=$shifts[]->shift_id;
         // dd($shift_id);
 //        $emp_clock=$this->empclockRepository->findWhere([
@@ -76,31 +76,23 @@ class SalaryController extends Controller
 //        ])->first();
 //        dd($emp_clock);
 //        $emp_clock=EmpClock::where(['shift_id'=>($shift_id),'user_id'=>($user->_id)])->first();
-        
+        $empclockTrans=$empClock->transform('for-calculating-salary');
+        $time_in=$empclockTrans->time_in;
+        $time_out=$empclockTrans->time_out;
+        $user_id=$empclockTrans->user_id;
+        $shift_id=$empclockTrans->shift_id;
+        $time_shift_in=$empclockTrans->shift->time_begin;
+        $time_shift_out=$empclockTrans->shift->time_end;
         $work_sals = [];
-        foreach($shifts as $shift){
-            $time_in=$shift->time_in;
-            $time_out=$shift->time_out;
-            $timein=Carbon::parse($time_in);
-            $timeout=Carbon::parse($time_out);
-            // dd($timeout);
-            
-            // dd($timein);
-            $work_time=$timeout->diffInSeconds($timein);
-            $salary=($work_time/3600)*30000;
-            // dd($salary);
-            // dd($work_time);
-            $attribute=[
-                'user_id'=>$user->_id,
-                'work_time'=>$work_time,
-                'salary'=>$salary,
-            ];
-            $work_sal=$this->salaryRepository->create($attribute);
-            
-            $work_sals[] = $work_sal->transform();
-        }
-        return $this->successRequest($work_sals);
-
+        $time_shift_in=Carbon::createFromTime($time_shift_in);
+        $time_shift_out=Carbon::createFromTime($time_shift_out);
+        $work_time=$this->checkRangeTime($time_in,$time_out,$time_shift_in,$time_shift_out);
+        $attribute=[
+            'user_id'=>$user_id,
+            'work_time'=>$work_time,
+        ];
+        $work_sal=$this->salaryRepository->create($attribute);
+        return $this->successRequest($work_sal->transform());
     }
 
     public  function viewSalary(){         
@@ -153,5 +145,60 @@ class SalaryController extends Controller
         $user["salary"]=$sum_sal;
         // dd($user);
         return $this->successRequest($user);
+    }
+    //Check khoảng thời gian check in và check out với thời gian trong bảng timeshift
+    public function checkRangeTime(Carbon $time_in,Carbon $time_out,Carbon $time_shift_in,Carbon $time_shift_out)
+    {
+        //A và B là thời gian vào và thời gian ra của ca đó
+        // A' và B' là thời gian checkin và checkout
+        //              A---------------B
+        //    A'-------
+        // TH1 : A' nằm ngoài A
+        if($time_in<($time_shift_in))
+        {
+            //B' cũng nằm ngoài A
+            //           A-----B
+            // A'-----B'
+            if($time_out<=$time_shift_in)
+            {
+                return 0;
+            }
+            //B' nằm trong đoạn A---------B
+            //              A'-------B'
+            if($time_out>$time_shift_in && $time_out<=$time_shift_out)
+            {
+                return ($time_shift_in->diffInSeconds($time_out))/3600;
+            }
+            //B' nằm ngoài đoạn A---B về phía B'
+            //  A------B
+            //A'----------B'
+            if($time_out>$time_shift_out)
+            {
+                return ($time_shift_out->diffInSeconds($time_shift_in))/3600;
+            }
+        }
+        //TH 2: A' nằm trong đoạn A--------B
+        //                          A'----
+        if ($time_in>=$time_shift_in && $time_in <=$time_shift_out)
+        {
+            //B' nằm trong đoạn A---------------B
+            //                   A'-----B'
+            if($time_out<=$time_shift_out)
+            {
+                return ($time_out->diffInSeconds($time_in))/3600;
+            }
+            //B' nằm ngoài đoạn A-------------B
+            //                    A'-------------B'
+            if($time_out>$time_shift_out)
+            {
+                return ($time_shift_out->diffInSeconds($time_in))/3600;
+            }
+        }
+        //TH 3 : A' nằm ngoài đoạn A-------B
+        //                                   A'-------B'
+        if($time_in>$time_shift_out)
+        {
+            return 0;
+        }
     }
 }

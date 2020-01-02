@@ -74,8 +74,8 @@ class ShiftController extends Controller
             'dep_id'=>'nullable',
             'position_id'=>'nullable',
             'shift_name'=>'required',
-            'time_begin'=>'required|date_format:H:i:s',
-            'time_end'=>'required|date_format:H:i:s',
+            'time_begin'=>'required|date_format:H:i',
+            'time_end'=>'required|date_format:H:i',
             'work_date'=>'required|date_format:d-m-Y',
         ]);
         if ($validator->fails()) {

@@ -17,8 +17,18 @@ class ShiftTransformer extends TransformerAbstract
      *
      * @return array
      */
-    public function transform(Shift $model)
+    public function transform(Shift $model, $type ='')
     {
+        //dung de tinh luong
+        if($type=='for-calculating-salary')
+        {
+            $time_in=$model->time_begin;
+            $time_out=$model->time_end;
+            return [
+                'time_begin'=>$time_in,
+                'time_end'=>$time_out,
+            ];
+        }
         $time_in=$model->time_begin;
         $time_out=$model->time_end;
         $time=$time_in.'-'.$time_out;
