@@ -61,6 +61,10 @@ class SalaryController extends Controller
 
     #region tao ca lam
     
+    
+
+
+
     public function create()
     {
         $user=$this->user();

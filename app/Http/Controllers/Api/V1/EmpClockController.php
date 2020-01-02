@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Api\V1;
 
 
 use Carbon\Carbon;
-use App\Api\Entities\Shift;
 use App\Api\Repositories\Contracts\EmpshiftRepository;
 use App\Api\Repositories\Contracts\UserRepository;
 use App\Api\Repositories\Contracts\EmpClockRepository;
+use App\Api\Repositories\Contracts\HistoryRepository;
+use App\Api\Repositories\Contracts\ShiftRepository;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -18,6 +19,9 @@ use Gma\Curl;
 use App\Api\Entities\User;
 use App\Api\Entities\Empshift;
 use App\Api\Entities\EmpClock;
+use App\Api\Entities\History;
+use App\Api\Entities\Shift;
+
 //Google firebase
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
@@ -28,17 +32,22 @@ class EmpClockController extends Controller
 
     protected  $userRepository;
     protected $empclockRepository;
+    
+    protected $historyRepository;
+    protected $shiftRepository;
 
     protected $auth;
 
     protected $request;
     public function __construct(  AuthManager $auth,
                                   Request $request,
-                                  EmpClockRepository $empClockRepository)
+                                  EmpClockRepository $empClockRepository,
+                                  HistoryRepository $historyRepository)
     {
         $this->request = $request;
         $this->auth = $auth;
         $this->empclockRepository=$empClockRepository;
+        $this->historyRepository=$historyRepository;
         parent::__construct();
     }
 
@@ -113,8 +122,16 @@ class EmpClockController extends Controller
     {
         $user=$this->user();
         $shift_id=$this->request->get('shift_id');
+        //lay thong tin ca lam
+        $shift_check=Shift::where(['_id'=>$shift_id])->first();
+        $date=$shift_check->work_date;
+        $shift_name=$shift_check->shift_name;
+        $shift_time=($shift_check->time_begin).'-'.($shift_check->time_end);
+
+        // dd($shift_time);
         //Lấy thời gian lúc nhân viên bấm
         $time=Carbon::now('Asia/Ho_Chi_Minh');
+        $time_check=$time->format('h:i');
 //        $emp_clock=$this->empclockRepository->findWhere([
 //            'shift_id'=>mongo_id($shift_id),'user_id'=>mongo_id($user->_id)
 //        ])->first();
@@ -126,7 +143,7 @@ class EmpClockController extends Controller
         
         $clock_check=EmpClock::where(['shift_id'=>($shift_id),'user_id'=>($user->_id),'status'=>1])->first();
 
-
+        
         if(empty($clock_check)){
             $status=1;
             $attribute=[
@@ -136,14 +153,37 @@ class EmpClockController extends Controller
                 'time_out'=>NULL,
                 'status'=>$status,
             ];
-            $emp_clock=$this->empclockRepository->create($attribute);
+            
+            $data=[
+                'user_id'=>$user->_id,
+                'user_name'=>$user->full_name,
+                'date'=>$date,
+                'shift_name'=>$shift_name,
+                'shift_time'=>$shift_time,
+                'time_check'=>$time_check,
+                'status'=>$status,
+            ];
+            // dd($data);
+            $emp_clock=$this->empclockRepository->create($attribute);            
+            $emp_history=$this->historyRepository->create($data);
+            
         }
         else{
             $attribute=[                
                 'time_out'=>$time->toDateTimeString(),
                 'status'=>$status,
             ];
-            $emp_clock=$this->empclockRepository->update($attribute,$clock_check->_id);
+            $data=[
+                'user_id'=>$user->_id,
+                'user_name'=>$user->full_name,
+                'date'=>$date,
+                'shift_name'=>$shift_name,
+                'shift_time'=>$shift_time,
+                'time_check'=>$time_check,
+                'status'=>$status,
+            ];
+            $emp_clock=$this->empclockRepository->update($attribute,$clock_check->_id);            
+            $emp_history=$this->historyRepository->create($data);
             // $emp_clock=$this->empclockRepository->create($attribute);
         }
         
