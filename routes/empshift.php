@@ -36,6 +36,9 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
             'as' => 'empshift.view',
             'uses' => 'EmpshiftController@viewEF',
         ]);
+        $api->get('empshift/listbyuser',[
+            'as'=>'shift.listbyuser',
+            'uses'=> 'EmpshiftController@listShiftbyUser']);
     });
 
 

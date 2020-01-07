@@ -137,5 +137,16 @@ class EmpshiftController extends Controller
 
         // return $this->successRequest($user->transform());
     }
+    public function listShiftbyUser()
+    {
+        $user_id=$this->user()->_id;
+        $shifts=$this->empshiftRepository->findbyField('user_id',$user_id);
+        $data=[];
+        foreach($shifts as $shift)
+        {
+            $data[]=$shift->transform();
+        }
+        return $this->successRequest($data);
+    }
     #endregion
 }

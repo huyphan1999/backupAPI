@@ -44,14 +44,11 @@ class EmpClockRepositoryEloquent extends BaseRepository implements EmpClockRepos
         $work_sals = [];
         $time_shift_in=Carbon::createFromTime((int)$time_shift_in);
         $time_shift_out=Carbon::createFromTime((int)$time_shift_out);
-        $time_in=Carbon::createFromTime(17,00);
-        $time_out=Carbon::createFromTime(17,50);
         $work_time=$this->checkRangeTime($time_in,$time_out,$time_shift_in,$time_shift_out);
         $attribute=[
             'user_id'=>$user_id,
             'work_time'=>$work_time,
         ];
-        dd($attribute);
         return $attribute;
     }
     public function checkRangeTime(Carbon $time_in,Carbon $time_out,Carbon $time_shift_in,Carbon $time_shift_out)

@@ -5,6 +5,7 @@ namespace App\Api\Entities;
 use Moloquent\Eloquent\Model as Moloquent;
 use App\Api\Transformers\EmpshiftTransformer;
 use Moloquent\Eloquent\SoftDeletes;
+use App\Api\Entities\Shift;
 
 class Empshift extends Moloquent
 {
@@ -25,7 +26,7 @@ class Empshift extends Moloquent
         'last_activity'
     ];
 
-    public function transform(string $type = '')
+    public function transform($type = '')
     {
         $transformer = new EmpshiftTransformer();
 
@@ -37,6 +38,18 @@ class Empshift extends Moloquent
         $transformer = new EmpshiftTransformer();
 
         return $transformer->transformSelect($this);
+    }
+    public function shift()
+    {
+        $shift = [];
+        if(!empty($this->shift_id)) {
+            $shifts = Shift::where(['_id' => mongo_id($this->shift_id)])->get();
+            foreach($shifts as $row)
+            {
+                $shift=$row->transform();
+            }
+        }
+        return $shift;
     }
 
 }

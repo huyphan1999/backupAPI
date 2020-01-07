@@ -44,6 +44,7 @@ class UserTransformer extends TransformerAbstract
             'id' => $model->_id,
             'name' => $model->name,
             'full_name'=>$model->full_name,
+            'phone_number'=>$model->phone_number,
             'email' => $model->email,
             'is_root' => (int)$model->is_root,
             'shop_id' => mongo_id_string($model->shop_id),
