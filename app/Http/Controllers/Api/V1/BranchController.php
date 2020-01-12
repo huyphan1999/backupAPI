@@ -70,20 +70,23 @@ class BranchController extends Controller
     public function registerBranch()
     {
         // Validate Data import.
+        $user=$this->user();
+        $shop_id=$user->shop_id;
+        // dd($shop_id);
         $validator = \Validator::make($this->request->all(), [
-            'shop_id'=>'required',
-            'branch_name' => 'required',
-            'address'=> 'required'
+            'name' => 'required',
+            'address'=> 'required',
+            'note'=>'nullable'
         ]);
         if ($validator->fails()) {
             return $this->errorBadRequest($validator->messages()->toArray());
         }
 
 
-        $branchname=$this->request->get('branch_name');
+        $branchname=$this->request->get('name');
         // Kiểm tra xem email đã được đăng ký trước đó chưa
-        $shopCheck = Shop::where(['_id' => mongo_id($this->request->get('shop_id'))])->first();
-        $branchCheck=Branch::where(['branch_name'=>$branchname])->first();
+        $shopCheck = Shop::where(['_id' => $shop_id])->first();
+        $branchCheck=Branch::where(['name'=>$branchname])->first();
         if(empty($shopCheck)) {
             return $this->errorBadRequest(trans('Công ty chưa đăng ký'));
         }
@@ -94,9 +97,10 @@ class BranchController extends Controller
         }
 
         $attributes = [
-            'branch_name' => $this->request->get('branch_name'),
+            'name' => $this->request->get('name'),
             'address' => $this->request->get('address'),
-            'shop_id'=>mongo_id($shopCheck->_id),
+            'shop_id'=>$shop_id,
+            'note'=>$this->request->get('note'),
         ];
         $branch = $this->branchRepository->create($attributes);
         return $this->successRequest($branch->transform());
@@ -111,8 +115,8 @@ class BranchController extends Controller
         // Validate Data import.
         $validator = \Validator::make($this->request->all(), [
             'id'=>'required',
-            'branch_name' => 'required',
-            'address'=> 'required'
+            'name' => 'nullable',
+            'address'=> 'nullable'
         ]);
         if ($validator->fails()) {
             return $this->errorBadRequest($validator->messages()->toArray());
@@ -127,7 +131,7 @@ class BranchController extends Controller
         }
         // lấy thông tin để sửa
         $attributes = [
-            'branch_name' => $this->request->get('branch_name'),
+            'name' => $this->request->get('name'),
             'address' => $this->request->get('address'),
         ];
         $branch = $this->branchRepository->update($attributes,$id);
@@ -138,7 +142,10 @@ class BranchController extends Controller
     #endregion
     public function listBranch()
     {
-        $branches=$this->branchRepository->all();
+        $user=$this->user();
+        // $branches=$this->branchRepository->all();
+        $branches=Branch::where(['shop_id'=>$user->shop_id])->get();
+        // dd($branches);
         $data=[];
         foreach($branches as $branch)
         {

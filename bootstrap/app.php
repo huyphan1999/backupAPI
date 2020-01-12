@@ -185,6 +185,7 @@ $app->group(['namespace' => 'App\Http\Controllers'], function ($app) {
     require __DIR__.'/../routes/empshift.php';
     require __DIR__.'/../routes/empclock.php';
     require __DIR__.'/../routes/salary.php';
+    require __DIR__.'/../routes/history.php';
 });
 
 return $app;

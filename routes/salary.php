@@ -19,8 +19,7 @@ $api = app('Dingo\Api\Routing\Router');
 // v1 version API
 $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($api) {
     $api->group(['middleware' => ['api.locale']], function ($api) {
-        //Login        
-
+        //Login
         $api->get('salary/register', [
             'as' => 'salary.register',
             'uses' => 'SalaryController@create',
@@ -31,5 +30,4 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
             'uses' => 'SalaryController@viewSalary',
         ]);
     });
-
 });

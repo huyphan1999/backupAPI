@@ -20,7 +20,8 @@ class DepTransformer extends TransformerAbstract
     public function transform(Dep $model, string $type = ''){
         $data = [
             'id'=>$model->_id,
-            'dep_name' => $model->dep_name,
+            'name' => $model->name,
+            'note'=>$model->note,
             'branch'=>[],
         ];
         $branch=$model->branch();

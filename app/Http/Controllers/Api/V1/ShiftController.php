@@ -68,10 +68,11 @@ class ShiftController extends Controller
     #region tao ca lam
     public function registerShift()
     {
+        $user=$this->user();
         // Validate Data import.
         $validator = \Validator::make($this->request->all(), [
             'branch_id'=>'nullable',
-            'dep_id'=>'nullable',
+            'dep_id'=>'required',
             'position_id'=>'nullable',
             'shift_name'=>'required',
             'time_begin'=>'required|date_format:H:i',
@@ -106,7 +107,7 @@ class ShiftController extends Controller
             'time_end'=>$time_end,
         ];
         $shift = $this->shiftRepository->create($attributes);
-        return $this->successRequest($shift);
+        return $this->successRequest($shift->transform());
 
         // return $this->successRequest($user->transform());
     }
@@ -225,7 +226,20 @@ class ShiftController extends Controller
 //     }
     #endregion
     public  function listShift(){
-        $shifts=$this->shiftRepository->all();
+        $user=$this->user();
+        $shop_id=$user->shop_id;
+
+        $validator = \Validator::make($this->request->all(), [
+            'dep_id'=>'required',
+        ]);
+        if ($validator->fails()) {
+            return $this->errorBadRequest($validator->messages()->toArray());
+        }
+        $dep_check=Dep::where(['_id'=>$this->request->get('dep_id')])->first();
+        $branch_id=$dep_check->branch_id;
+        $shifts=Shift::where(['dep_id'=>$this->request->get('dep_id'),'branch_id'=>$branch_id,'shop_id'=>$shop_id])->get();
+        // dd($shifts);
+        // $shifts=$this->shiftRepository->all();
        $data=[];
        foreach($shifts as $shift)
        {

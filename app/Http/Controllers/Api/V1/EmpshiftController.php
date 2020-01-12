@@ -71,7 +71,7 @@ class EmpshiftController extends Controller
     {
         // Validate Data import.
         $validator = \Validator::make($this->request->all(), [
-            'user_id'=>'string|required',
+            'user_id'=>'required',
             'shift_id'=>'required',
         ]);
         if ($validator->fails()) {
@@ -88,10 +88,8 @@ class EmpshiftController extends Controller
         if(empty($shiftCheck)){
             return $this->errorBadRequest('Ca làm chưa đăng ký');
         }
-
         $attributes = [
             'user_id'=>$user_id,
-            //'date_of_week'=>$this->request->get('date_of_week'),
             'shift_id'=>$shift_id,
         ];
         $empShift = $this->empshiftRepository->create($attributes);
@@ -131,9 +129,14 @@ class EmpshiftController extends Controller
 
 
         return $this->successRequest($dep);*/
-        $user = Auth::user();
-        $empshift=$this->empshiftRepository->getEmpshift(["user_id"=>$this->request->get('id')]);
-        return $this->successRequest($empshift);
+        $user = $this->user();
+        $empshift=$this->empshiftRepository->getEmpshift(["user_id"=>$user->_id]);
+        // dd($empshift);
+        $data=[];
+        foreach($empshift as $ef){
+            $data[]=$ef->transform();
+        }
+        return $this->successRequest($data);
 
         // return $this->successRequest($user->transform());
     }

@@ -32,8 +32,8 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
             'as' => 'empshift.edit',
             'uses' => 'EmpshiftController@editEF',
         ]);
-        $api->get('empshift/view', [
-            'as' => 'empshift.view',
+        $api->get('empshift/list', [
+            'as' => 'empshift.list',
             'uses' => 'EmpshiftController@viewEF',
         ]);
         $api->get('empshift/listbyuser',[
