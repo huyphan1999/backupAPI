@@ -19,12 +19,10 @@ class EmpshiftTransformer extends TransformerAbstract
      */
     public function transform(Empshift $model)
     {
-        $data=[];
         $shift=$model->shift();
         if(!empty($shift))
         {
-           $data[]=$shift;
+           return $shift;
         }
-        return $data;
     }
 }
