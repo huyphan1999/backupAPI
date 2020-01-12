@@ -96,19 +96,39 @@ class ShiftController extends Controller
         $time_end=$this->request->get('time_end');
         //tao ngay lam
         $work_date=$this->request->get('work_date');
-        // Tạo shop trước
-        $attributes = [
-            'shift_name'=>$this->request->get('shift_name'),
-            'shop_id'=>$shop_id,
-            'branch_id'=>$branch_id,
-            'dep_id'=>$dep_id,
-            'work_date'=>$work_date,
-            'time_begin'=>$time_begin,
-            'time_end'=>$time_end,
-        ];
-        $shift = $this->shiftRepository->create($attributes);
-        return $this->successRequest($shift->transform());
-
+        if(is_array($work_date))
+        {
+            foreach($work_date as $row)
+            {
+                $dt=Carbon::createFromDate($row);
+                if($dt->isSunday()==false)
+                $attributes = [
+                    'shift_name'=>$this->request->get('shift_name'),
+                    'shop_id'=>$shop_id,
+                    'branch_id'=>$branch_id,
+                    'dep_id'=>$dep_id,
+                    'work_date'=>$row,
+                    'time_begin'=>$time_begin,
+                    'time_end'=>$time_end,
+                ];
+                $shift = $this->shiftRepository->create($attributes);
+                return $this->successRequest($shift->transform());
+            }
+        }
+        else
+        {
+            $attributes = [
+                'shift_name'=>$this->request->get('shift_name'),
+                'shop_id'=>$shop_id,
+                'branch_id'=>$branch_id,
+                'dep_id'=>$dep_id,
+                'work_date'=>$work_date,
+                'time_begin'=>$time_begin,
+                'time_end'=>$time_end,
+            ];
+            $shift = $this->shiftRepository->create($attributes);
+            return $this->successRequest($shift->transform());
+        }
         // return $this->successRequest($user->transform());
     }
     #endregion
