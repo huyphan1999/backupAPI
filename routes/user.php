@@ -30,6 +30,12 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
             'as' => 'auth.organization',
             'uses' => 'AuthController@organization',
         ]);
+        //test task schedule
+        $api->get('user/mail', [
+            'as' => 'user.mail',
+            'uses' => 'UserController@sendMail',
+        ]);
+        //end test
 
         //Validate pre-login
         $api->post('auth/validate-pre-login', [

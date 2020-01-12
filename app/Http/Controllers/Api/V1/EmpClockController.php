@@ -120,6 +120,7 @@ class EmpClockController extends Controller
 
     public function TimeIn()
     {
+//        Log::debug('test0');
         $user=$this->user();
         $shift_id=$this->request->get('shift_id');
         //lay thong tin ca lam

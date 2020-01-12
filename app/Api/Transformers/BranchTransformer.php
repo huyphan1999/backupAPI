@@ -35,8 +35,9 @@ class BranchTransformer extends TransformerAbstract
     public function transform(Branch $model, string $type = ''){
         $data = [
             'id'=>$model->_id,
-            'branch_name' => $model->branch_name,
+            'name' => $model->name,
             'address' => $model->address,
+            'note'=>$model->note,
             'shop'=>[],
         ];
         // dd($data);

@@ -72,32 +72,36 @@ class DepController extends Controller
     #region tao phong ban
     public function registerDep()
     {
+        $user=$this->user();
         // Validate Data import.
         $validator = \Validator::make($this->request->all(), [
             'branch_id' => 'required',
-            'dep_name'=> 'required',
+            'name'=> 'required',
+            'note'=>'nullable'
         ]);
         if ($validator->fails()) {
             return $this->errorBadRequest($validator->messages()->toArray());
         }
 
-        $depname=$this->request->get('dep_name');
+        $depname=$this->request->get('name');
         $branchCheck = Branch::where(['_id'=>mongo_id($this->request->get('branch_id'))])->first();
-        $depCheck=Dep::where(['dep_name'=>$depname])->first();
+        $depCheck=Dep::where(['name'=>$depname])->first();
+        
+        // dd($depCheck->name);
         if(empty($branchCheck)) {
             return $this->errorBadRequest(trans('Chi nhánh không tồn tại'));
         }
         else{
-            if(!empty($depCheck) && $branchCheck==$depCheck->branchName){
+            if(!empty($depCheck)){
                 return $this->errorBadRequest(trans('Phòng ban đã tồn tại'));
             }
         }
 
         $attributes = [
-            'dep_name'=>$depname,
-            'is_web' => (int)($this->request->get('is_web')),
+            'name'=>$depname,
             'branch_id'=>mongo_id($branchCheck->_id),
-            'shop_id'=>mongo_id($branchCheck->shop_id)
+            'shop_id'=>mongo_id($branchCheck->shop_id),
+            'note'=>$this->request->get('note')
         ];
         $dep = $this->depRepository->create($attributes);
 
@@ -142,7 +146,8 @@ class DepController extends Controller
         // Validate Data import.
         $validator = \Validator::make($this->request->all(), [
             'id'=>'required',
-            'depName'=> 'required'
+            'name'=> 'required',
+            'note'=>'nullable'
         ]);
         if ($validator->fails()) {
             return $this->errorBadRequest($validator->messages()->toArray());
@@ -159,7 +164,8 @@ class DepController extends Controller
 
         // Tạo shop trước
         $attributes = [
-            'depName' => $this->request->get('depName'),
+            'name' => $this->request->get('name'),
+            'note'=>$this->request->get('note')
         ];
         $dep = $this->depRepository->update($attributes,$id);
 
@@ -174,7 +180,22 @@ class DepController extends Controller
     #region xem danh sach phong ban
     public function listDep()
     {
-        $deps=$this->depRepository->all();
+        $user=$this->user();
+        $shop_id=$user->shop_id;
+        $validator = \Validator::make($this->request->all(), [
+            'branch_id'=>'required',
+        ]);
+        if ($validator->fails()) {
+            return $this->errorBadRequest($validator->messages()->toArray());
+        }
+        $branch=Branch::where(['_id'=>$this->request->get('branch_id')])->first();
+        $branch_id=mongo_id($branch->_id);
+        // dd($branchid);
+        
+
+        // $deps=$this->depRepository->all();
+        $deps=Dep::where(['branch_id'=>$branch_id])->get();
+        // dd($deps);
         $data=[];
         foreach($deps as $dep)
         {

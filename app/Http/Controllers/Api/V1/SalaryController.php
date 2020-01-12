@@ -107,12 +107,11 @@ class SalaryController extends Controller
 
     }
 
-    public  function viewSalary(){         
-        
-        
-
+    public  function viewSalary()
+    {
+//        Log::debug('test1');
         $user=$this->user();
-        
+
         $salarys=Salary::where(['user_id'=>($user->_id)])->get();
         //  $salarys=Salary::select('user_id','SUM(work_time) as work_time','SUM(salary) as salary')->get();
         // $salarys=Salary::select('user_id','work_time','salary')->get();
@@ -120,11 +119,11 @@ class SalaryController extends Controller
         //Luu cong va luong vao mang user_sal
         $user_sal=[];
         foreach($salarys as $salary){
-            
+
             $user_sal[]=$salary->transform();
-            
+
         }
-        //tao mang user de tinh tong cong va luong 
+        //tao mang user de tinh tong cong va luong
         $user=[
             "user_id"=>$user->_id,
             "work_time"=>NULL,
@@ -135,8 +134,8 @@ class SalaryController extends Controller
         $sum_sal=0;
         for($i=0;$i<count($user_sal,COUNT_NORMAL);$i++){
             $sum_time=$sum_time+($user_sal[$i]["work_time"]);
-            $sum_sal=$sum_sal+($user_sal[$i]["salary"]);     
-            // dd($sum_sal);       
+            $sum_sal=$sum_sal+($user_sal[$i]["salary"]);
+            // dd($sum_sal);
         }
         //push tong cong va luong vao user
         $user["work_time"]=$sum_time;
