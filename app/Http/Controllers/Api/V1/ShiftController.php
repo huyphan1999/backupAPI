@@ -8,6 +8,7 @@ use App\Api\Repositories\Contracts\ShiftRepository;
 
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Auth\AuthManager;
@@ -72,18 +73,22 @@ class ShiftController extends Controller
         // Validate Data import.
         $validator = \Validator::make($this->request->all(), [
             'branch_id'=>'nullable',
-            'dep_id'=>'required',
+            'dep_id'=>'nullable',
             'position_id'=>'nullable',
+            'user_id'=>'nullable',
             'shift_name'=>'required',
             'time_begin'=>'required|date_format:H:i',
             'time_end'=>'required|date_format:H:i',
-            'work_date'=>'required|date_format:Y-m-d',
+            'work_date_begin'=>'required|date_format:Y-m-d',
+            'work_date_end'=>'required|date_format:Y-m-d',
         ]);
         if ($validator->fails()) {
             return $this->errorBadRequest($validator->messages()->toArray());
         }
-
         $dep_id=$this->request->get('dep_id');
+        $branch_id=$this->request->get('branch_id');
+        $position_id=$this->request->get('position_id');
+        $user_id=$this->request->get('user_id');
         $depCheck=Dep::where(['_id'=>mongo_id($dep_id)])->first();
         if(empty($depCheck)){
             return $this->errorBadRequest('Chưa có phòng ban');
@@ -94,14 +99,15 @@ class ShiftController extends Controller
         //tao time
         $time_begin=$this->request->get('time_begin');
         $time_end=$this->request->get('time_end');
+        $work_date_begin=$this->request->get('work_date_begin');
+        $work_date_end=$this->request->get('work_date_end');
         //tao ngay lam
-        $work_date=$this->request->get('work_date');
-        if(is_array($work_date))
-        {
+        $work_date=CarbonPeriod::create($work_date_begin,$work_date_end);
+        $data=[];
+
             foreach($work_date as $row)
             {
-                $dt=Carbon::createFromDate($row);
-                if($dt->isSunday()==false)
+                if($row->isSunday()==false)
                 $attributes = [
                     'shift_name'=>$this->request->get('shift_name'),
                     'shop_id'=>$shop_id,
@@ -111,25 +117,10 @@ class ShiftController extends Controller
                     'time_begin'=>$time_begin,
                     'time_end'=>$time_end,
                 ];
-                $shift = $this->shiftRepository->create($attributes);
-                return $this->successRequest($shift->transform());
+                $data[]=$attributes;
+                $shift[] = $this->shiftRepository->create($attributes);
             }
-        }
-        else
-        {
-            $attributes = [
-                'shift_name'=>$this->request->get('shift_name'),
-                'shop_id'=>$shop_id,
-                'branch_id'=>$branch_id,
-                'dep_id'=>$dep_id,
-                'work_date'=>$work_date,
-                'time_begin'=>$time_begin,
-                'time_end'=>$time_end,
-            ];
-            $shift = $this->shiftRepository->create($attributes);
-            return $this->successRequest($shift->transform());
-        }
-        // return $this->successRequest($user->transform());
+        return $this->successRequest($data);
     }
     #endregion
 

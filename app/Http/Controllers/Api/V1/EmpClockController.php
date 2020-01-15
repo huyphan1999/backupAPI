@@ -118,10 +118,11 @@ class EmpClockController extends Controller
     public function TimeIn()
     {
 //        Log::debug('test0');
-        $user=$this->user();
-        $shift_id=$this->request->get('shift_id');
+        $user=$this->auth()->user();
+
+        $shift_id=$user->shift_id;
         //lay thong tin ca lam
-        $shift_check=Shift::where(['_id'=>$shift_id])->first();
+        $shift_check=Shift::where(['_id'=>mongo_id($shift_id)])->first();
         $date=$shift_check->work_date;
         $shift_name=$shift_check->shift_name;
         $shift_time=($shift_check->time_begin).'-'.($shift_check->time_end);
