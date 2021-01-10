@@ -18,30 +18,24 @@ class ShiftTransformer extends TransformerAbstract
      *
      * @return array
      */
-    public function transform(Shift $model, $type ='')
+    public function transform(Shift $model, $type = '')
     {
         //dung de tinh luong
-        if($type=='for-calculating-salary')
-        {
-            $time_in=$model->time_begin;
-            $time_out=$model->time_end;
-            return [
-                'time_begin'=>$time_in,
-                'time_end'=>$time_out,
-            ];
-        }
-        $time_in=$model->time_begin;
-        $time_out=$model->time_end;
-        $time=$time_in.'-'.$time_out;
+        $time_in = $model->time_begin;
+        $time_out = $model->time_end;
+        $time = $time_in . '-' . $time_out;
+
         return [
-            'date'=> $model->work_date,
-            'data'=>[
-                'name'=>$model->shift_name,
-                'time'=>$time,
-            ],
+            'id' => $model->_id,
+            'name' => $model->name,
+            'key' => $model->shift_key,
+            'timeBegin' => $model->time_begin,
+            'timeEnd' => $model->time_end,
+            'time' => $time,
+            'assignments' => $model->assignments,
+            'branch_ids' => $model->branch_ids,
+            'dep_ids' => $model->dep_ids
         ];
-
-
     }
     /*public function transform(Shift $model)
     {
@@ -52,7 +46,4 @@ class ShiftTransformer extends TransformerAbstract
 
 
     }*/
-
-
-
 }

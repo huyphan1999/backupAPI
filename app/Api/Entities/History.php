@@ -8,13 +8,13 @@ use Moloquent\Eloquent\SoftDeletes;
 
 class History extends Moloquent
 {
-	use SoftDeletes;
+    use SoftDeletes;
 
-	protected $collection = 'emp_histories';
+    protected $collection = 'emp_histories';
 
     protected $guarded = array();
 
-    protected $hidden = ['updated_at','deleted_at'];
+    protected $hidden = ['updated_at', 'deleted_at'];
 
     protected $dates = [
         'created_at',
@@ -22,7 +22,10 @@ class History extends Moloquent
         'deleted_at',
         'start_package',
         'end_package',
-        'last_activity'
+        'last_activity',
+        'date',
+        'time_check',
+        'working_date'
     ];
 
     public function transform(string $type = '')
@@ -32,11 +35,10 @@ class History extends Moloquent
         return $transformer->transform($this, $type);
     }
 
-    public function transformSelect()
-    {
-        $transformer = new HistoryTransformer();
+    // public function transformSelect()
+    // {
+    //     $transformer = new HistoryTransformer();
 
-        return $transformer->transformSelect($this);
-    }
-
+    //     return $transformer->transformSelect($this);
+    // }
 }

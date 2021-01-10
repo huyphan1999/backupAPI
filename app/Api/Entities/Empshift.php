@@ -9,21 +9,19 @@ use App\Api\Entities\Shift;
 
 class Empshift extends Moloquent
 {
-	use SoftDeletes;
+    use SoftDeletes;
 
     protected $collection = 'employee_shifts';
 
     protected $guarded = array();
 
-    protected $hidden = ['updated_at','deleted_at'];
+    protected $hidden = ['updated_at', 'deleted_at'];
 
     protected $dates = [
         'created_at',
         'updated_at',
         'deleted_at',
-        'start_package',
-        'end_package',
-        'last_activity'
+        'working_date',
     ];
 
     public function transform($type = '')
@@ -33,23 +31,18 @@ class Empshift extends Moloquent
         return $transformer->transform($this, $type);
     }
 
-    public function transformSelect()
-    {
-        $transformer = new EmpshiftTransformer();
+    // public function transformSelect()
+    // {
+    //     $transformer = new EmpshiftTransformer();
 
-        return $transformer->transformSelect($this);
-    }
+    //     return $transformer->transformSelect($this);
+    // }
     public function shift()
     {
         $shift = [];
-        if(!empty($this->shift_id)) {
-            $shifts = Shift::where(['_id' => mongo_id($this->shift_id)])->get();
-            foreach($shifts as $row)
-            {
-                $shift=$row->transform();
-            }
+        if (!empty($this->shift_id)) {
+            $shift = Shift::where(['_id' => mongo_id($this->shift_id)])->first();
         }
         return $shift;
     }
-
 }

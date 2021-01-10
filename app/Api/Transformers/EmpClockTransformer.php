@@ -39,28 +39,29 @@ class EmpClockTransformer extends TransformerAbstract
     //     }
     //     return $data;
     // }
-    public function transform(EmpClock $model,$type='')
+    public function transform(EmpClock $model, $type = '')
     {
-        $data= [
-            'user_id'=>$model->user_id,
-            'shift_id'=>$model->shift_id,
-            'shift'=>[],
-            'time_in'=>$model->time_in,
-            'time_out'=>$model->time_out,
+
+        // dd($model->time_in);
+        $data = [
+            'shift' => [],
+            'time_in' => format_get_date($model->time_in),
+            'time_out' => format_get_date($model->time_out),
+            'isCheckOut' => $model->isCheckOut,
+            'status' => $model->status
         ];
         // $user=$model->user();
         // if(!empty($user))
         // {
         //     $data['user']=$user->transform();
         // }
-        $shift=$model->shift();
-        if(!empty($shift))
-        {
-            $data['shift']=$shift->transform();
+        $shift = $model->shift();
+        // dd($shift->transform());
+        if (!empty($shift)) {
+            $data['shift'] = $shift->transform();
         }
-        if($type=='for-calculating-salary')
-        {
-            $data['shift']=$shift->transform('for-calculating-salary');
+        if ($type == 'for-calculating-salary') {
+            $data['shift'] = $shift->transform('for-calculating-salary');
         }
         return $data;
     }

@@ -14,36 +14,38 @@ use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use App\Api\Entities\Role;
 use App\Api\Entities\User;
+
 /**
  * AuthController.
  */
 class AuthController extends Controller
 {
     /**
-    * UserRepository
-    **/
+     * UserRepository
+     **/
     protected $userRepository;
 
     /**
-    * RoleRepository
-    **/
+     * RoleRepository
+     **/
     protected $roleRepository;
 
     /**
-    * ShopRepository
-    **/
+     * ShopRepository
+     **/
     protected $shopRepository;
 
     protected $request;
 
     protected $auth;
 
-    public function __construct(UserRepository $userRepository, 
-                                RoleRepository $roleRepository, 
-                                ShopRepository $shopRepository,
-                                Request $request,
-                                AuthManager $auth)
-    {
+    public function __construct(
+        UserRepository $userRepository,
+        RoleRepository $roleRepository,
+        ShopRepository $shopRepository,
+        Request $request,
+        AuthManager $auth
+    ) {
         $this->userRepository = $userRepository;
         $this->roleRepository = $roleRepository;
         $this->shopRepository = $shopRepository;
@@ -75,34 +77,19 @@ class AuthController extends Controller
     {
         // Validate Data import.
         $validator = \Validator::make($this->request->all(), [
-            'name'=>'required',
+            'name' => 'required',
             'phone_number' => 'required',
         ]);
         if ($validator->fails()) {
             return $this->errorBadRequest($validator->messages()->toArray());
         }
-// b1: ktra shop ton tai khong
 
-        // b2: kiem tra user co ton tai khong
-        // b3:kiem tra user co thuoc shop nay khong
+        $shop = $this->shopRepository->findByField('name', $this->request->get('name'))->first();
+        if (!empty($shop)) {
 
-//        $credentials = $this->request->only('email', 'password');
-//
-//        $credentials['email'] = strtolower($credentials['email']);
-//        if (!$token = $this->auth->attempt($credentials)) {
-//            return $this->errorUnauthorized([trans('auth.incorrect')]);
-//        }
-//
-//        $data = array('token' => $token);
-//
-//        $this->auth->setToken($token);
-//        $user = $this->auth->user();
-        $shop=$this->shopRepository->findByField('name',$this->request->get('name'))->first();
-        if(!empty($shop))
-        {
+            // b2: kiem tra user co ton tai khong
             $user = $this->userRepository->findByField('phone_number', $this->request->get('phone_number'))->first();
-            if(!empty($user))
-            {
+            if (!empty($user)) {
                 $token = $this->auth->fromUser($user);
                 $userTrans = $user->transform();
                 return $this->successRequest(['token' => $token, 'user' => $userTrans]);

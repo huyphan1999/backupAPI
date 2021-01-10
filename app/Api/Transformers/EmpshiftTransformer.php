@@ -19,10 +19,15 @@ class EmpshiftTransformer extends TransformerAbstract
      */
     public function transform(Empshift $model)
     {
-        $shift=$model->shift();
-        if(!empty($shift))
-        {
-           return $shift;
+        $data = [
+            'date' => format_get_date($model->working_date, 'date'),
+        ];
+        $shift_data = [];
+        $shift = $model->shift();
+        if (!empty($shift)) {
+            $shift_data = $shift->transform();
+            $data['data'] = $shift_data;
         }
+        return $data;
     }
 }

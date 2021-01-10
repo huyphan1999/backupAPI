@@ -11,6 +11,7 @@ class MongoModelGenerator extends ModelGenerator
 {
     /**
      * Get stub name.
+     * +-
      *
      * @var string
      */

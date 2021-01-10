@@ -44,7 +44,7 @@ class EmpshiftController extends Controller
         Request $request
     ) {
         $this->empshiftRepository = $empshiftRepository;
-        $this->userRepository=$userRepository;
+        $this->userRepository = $userRepository;
         $this->request = $request;
         $this->auth = $auth;
         parent::__construct();
@@ -71,26 +71,26 @@ class EmpshiftController extends Controller
     {
         // Validate Data import.
         $validator = \Validator::make($this->request->all(), [
-            'user_id'=>'required',
-            'shift_id'=>'required',
+            'user_id' => 'required',
+            'shift_id' => 'required',
         ]);
         if ($validator->fails()) {
             return $this->errorBadRequest($validator->messages()->toArray());
         }
 
-        $user_id=$this->request->get('user_id');
-        $shift_id=$this->request->get('shift_id');
-        $userCheck=User::where(['_id'=>mongo_id($user_id)])->first();
-        $shiftCheck=Shift::where(['_id'=>$shift_id])->first();
-        if(empty($userCheck)){
+        $user_id = $this->request->get('user_id');
+        $shift_id = $this->request->get('shift_id');
+        $userCheck = User::where(['_id' => mongo_id($user_id)])->first();
+        $shiftCheck = Shift::where(['_id' => $shift_id])->first();
+        if (empty($userCheck)) {
             return $this->errorBadRequest('Nhân viên không tồn tại');
         }
-        if(empty($shiftCheck)){
+        if (empty($shiftCheck)) {
             return $this->errorBadRequest('Ca làm chưa đăng ký');
         }
         $attributes = [
-            'user_id'=>$user_id,
-            'shift_id'=>$shift_id,
+            'user_id' => $user_id,
+            'shift_id' => $shift_id,
         ];
         $empShift = $this->empshiftRepository->create($attributes);
 
@@ -130,11 +130,11 @@ class EmpshiftController extends Controller
 
         return $this->successRequest($dep);*/
         $user = $this->user();
-        $empshift=$this->empshiftRepository->getEmpshift(["user_id"=>$user->_id]);
+        $empshift = $this->empshiftRepository->getEmpshift(["user_id" => $user->_id]);
         // dd($empshift);
-        $data=[];
-        foreach($empshift as $ef){
-            $data[]=$ef->transform();
+        $data = [];
+        foreach ($empshift as $ef) {
+            $data[] = $ef->transform();
         }
         return $this->successRequest($data);
 
@@ -142,12 +142,12 @@ class EmpshiftController extends Controller
     }
     public function listShiftbyUser()
     {
-        $user_id=$this->user()->_id;
-        $shifts=$this->empshiftRepository->findbyField('user_id',$user_id);
-        $data=[];
-        foreach($shifts as $shift)
-        {
-            $data[]=$shift->transform();
+        $user_id = $this->user()->_id;
+        $shifts = $this->empshiftRepository
+            ->orderBy('working_date', 'desc')->findbyField('user_id', mongo_id($user_id));
+        $data = [];
+        foreach ($shifts as $shift) {
+            $data[] = $shift->transform();
         }
         return $this->successRequest($data);
     }

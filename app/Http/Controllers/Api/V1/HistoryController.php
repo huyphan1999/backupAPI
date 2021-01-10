@@ -33,13 +33,14 @@ class HistoryController extends Controller
     protected $auth;
 
     protected $request;
-    public function __construct(  AuthManager $auth,
-                                  Request $request,
-                                  HistoryRepository $historyRepository)
-    {
+    public function __construct(
+        AuthManager $auth,
+        Request $request,
+        HistoryRepository $historyRepository
+    ) {
         $this->request = $request;
         $this->auth = $auth;
-        $this->historyRepository=$historyRepository;
+        $this->historyRepository = $historyRepository;
         parent::__construct();
     }
     /**
@@ -60,18 +61,18 @@ class HistoryController extends Controller
      */
 
     #region tao ca lam
-    
-    
+
+
 
     public function list()
     {
-        $user=$this->user();
-        $emp_history=History::where(['user_id'=>($user->_id)])->get();
-        $emp_his=[];
-        foreach($emp_history as $index){
-            $emp_his[]=$index->transform();
+        $user = $this->user();
+        $emp_history = History::where(['user_id' => mongo_id($user->_id)])->orderBy('created_at', 'desc')->get();
+        $emp_his = [];
+        foreach ($emp_history as $index) {
+            $emp_his[] = $index->transform();
         }
-        
+
         return $this->successRequest($emp_his);
     }
 }

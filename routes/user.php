@@ -94,6 +94,13 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
                 'uses' => 'UserController@info',
             ]);
 
+
+            //Get List User
+            $api->get('user/list', [
+                'as' => 'user.list',
+                'uses' => 'UserController@list',
+            ]);
+
             //Get Info User
             $api->get('user/company-field', [
                 'as' => 'user.companyField',

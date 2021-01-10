@@ -87,13 +87,17 @@ class BranchController extends Controller
         // Kiểm tra xem email đã được đăng ký trước đó chưa
         $shopCheck = Shop::where(['_id' => $shop_id])->first();
         $branchCheck=Branch::where(['name'=>$branchname])->first();
-        if(empty($shopCheck)) {
-            return $this->errorBadRequest(trans('Công ty chưa đăng ký'));
-        }
-        else{
-            if(!empty($branchCheck)){
-                return $this->errorBadRequest(trans('Chi nhánh đã tồn tại'));
-            }
+        // if(empty($shopCheck)) {
+        //     return $this->errorBadRequest(trans('Công ty chưa đăng ký'));
+        // }
+        // else{
+        //     if(!empty($branchCheck)){
+        //         return $this->errorBadRequest(trans('Chi nhánh đã tồn tại'));
+        //     }
+        // }
+
+        if(!empty($branchCheck)){
+            return $this->errorBadRequest(trans('Chi nhánh đã tồn tại'));
         }
 
         $attributes = [
@@ -115,8 +119,8 @@ class BranchController extends Controller
         // Validate Data import.
         $validator = \Validator::make($this->request->all(), [
             'id'=>'required',
-            'name' => 'nullable',
-            'address'=> 'nullable'
+            'name' => 'required',
+            'address'=> 'required'
         ]);
         if ($validator->fails()) {
             return $this->errorBadRequest($validator->messages()->toArray());
@@ -133,6 +137,7 @@ class BranchController extends Controller
         $attributes = [
             'name' => $this->request->get('name'),
             'address' => $this->request->get('address'),
+            'note' => $this->request->get('note'),
         ];
         $branch = $this->branchRepository->update($attributes,$id);
         return $this->successRequest($branch->transform());

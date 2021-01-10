@@ -22,7 +22,7 @@ class Shift extends Moloquent
         'deleted_at',
         'start_package',
         'end_package',
-        'last_activity'
+        'last_activity',
     ];
 
     public function transform(string $type = '')

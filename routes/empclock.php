@@ -24,9 +24,9 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
         //     'as' => 'empshift.timekeeeping',
         //     'uses' => 'EmpClockController@TimeKeeping',
         // ]);
-        $api->post('empclock/timein', [
-            'as' => 'empshift.timein',
-            'uses' => 'EmpClockController@TimeIn',
+        $api->post('empclock/clock', [
+            'as' => 'empshift.checkin',
+            'uses' => 'EmpClockController@checkIn',
         ]);
         // $api->post('empclock/timeout', [
         //     'as' => 'empshift.timeout',

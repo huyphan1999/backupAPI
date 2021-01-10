@@ -70,90 +70,89 @@ class ShopController extends Controller
         // Validate Data import.
         $validator = \Validator::make($this->request->all(), [
             'name' => 'required',
-            'email' => 'email|required|max:255',
-            'phone_number'=>'required'
+            'phone_number' => 'required'
         ]);
         if ($validator->fails()) {
             return $this->errorBadRequest($validator->messages()->toArray());
         }
-        $email = strtolower($this->request->get('email'));;
+        $email = strtolower($this->request->get('name'));;
         // Kiểm tra xem email đã được đăng ký trước đó chưa
         $userCheck = User::where(['email' => $email])->first();
-        if(!empty($userCheck)) {
+        if (!empty($userCheck)) {
             return $this->errorBadRequest(trans('user.email_exists'));
         }
 
         // Tạo shop trước
         $attributes = [
             'name' => $this->request->get('name'),
-            'shop_name'=>$this->request->get('shop_name'),
-            'email' => $email,
-            'is_web' => (int)($this->request->get('is_web'))
+            'shop_name' => $this->request->get('shop_name'),
+            'email' => $this->request->get('name'),
         ];
         $shop = $this->shopRepository->create($attributes);
 
         // Sau đó tạo user
         $userAttributes = [
-            'full_name'=>$this->request->get('full_name'),
+            'full_name' => $this->request->get('full_name'),
             'email' => $email,
             'is_web' => (int)($this->request->get('is_web')),
             'shop_id' => mongo_id($shop->_id),
-            'position_id'=>null,
-            'branch_id'=>null,
-            'dep_id'=>null,
+            'position_id' => null,
+            'branch_id' => null,
+            'dep_id' => null,
             'is_root' => 1,
-            'phone_number'=>$this->request->get('phone_number')
+            'sex' => null,
+            'name' => 'admin',
+            'phone_number' => $this->request->get('phone_number')
         ];
         $user = $this->userRepository->create($userAttributes);
         //Gán token vào user
         $token = $this->auth->fromUser($user);
-        return $this->successRequest($token);
+        $userTrans = $user->transform();
+        return $this->successRequest(['token' => $token, 'user' => $userTrans]);
     }
     public function viewShop()
     {
-        $data=Shop::all();
-//        $data=$this->shopRepository->getShop(["shop_name"=>$this->request->get('shop_name'),"shop_id"=>$this->request->get('id')]);
+        $data = Shop::all();
+        //        $data=$this->shopRepository->getShop(["shop_name"=>$this->request->get('shop_name'),"shop_id"=>$this->request->get('id')]);
         return $this->successRequest($data);
-
     }
     public function editShop()
     {
-        $id=$this->request->get('id');
-        $shop=$this->shopRepository->find($id);
-        if($this->request->method('POST'))
-        {
+        $id = $this->request->get('id');
+        $shop = $this->shopRepository->find($id);
+        if ($this->request->method('POST')) {
             $email = strtolower($this->request->get('email'));
             $shopAttributes = [
                 'name' => $shop->_id,
-                'shop_name'=>$this->request->get('shop_name'),
+                'shop_name' => $this->request->get('shop_name'),
                 'email' => $email,
                 'is_web' => (int)($this->request->get('is_web'))
             ];
-            $data=$this->shopRepository->update($shopAttributes,$id);
+            $data = $this->shopRepository->update($shopAttributes, $id);
             return $this->successRequest($data);
         }
         return $this->successRequest($shop);
     }
     public function deleteShop()
     {
-        $id=$this->request->get('id');
-        $user=$this->shopRepository->deleteShop($id);
+        $id = $this->request->get('id');
+        $user = $this->shopRepository->deleteShop($id);
         return $this->successRequest($user);
-//        $user=$this->userRepository->findByField('shop_id',mongo_id($id));
-//        $shop=$this->shopRepository->find($id);
-//        foreach($user as $row)
-//        {
-//            $data=$this->userRepository->delete($row->_id);
-//        }
-//        $data=$this->shopRepository->delete($shop->_id);
-//        return $this->successRequest('Xóa thành công');
+        //        $user=$this->userRepository->findByField('shop_id',mongo_id($id));
+        //        $shop=$this->shopRepository->find($id);
+        //        foreach($user as $row)
+        //        {
+        //            $data=$this->userRepository->delete($row->_id);
+        //        }
+        //        $data=$this->shopRepository->delete($shop->_id);
+        //        return $this->successRequest('Xóa thành công');
     }
-//    public function viewShop()
-//    {
-//
-//        $data=$this->shopRepository->getShop(["name"=>$this->request->get('id')]);
-//        return $this->successRequest($data);
-//    }
+    //    public function viewShop()
+    //    {
+    //
+    //        $data=$this->shopRepository->getShop(["name"=>$this->request->get('id')]);
+    //        return $this->successRequest($data);
+    //    }
     public function searchShop()
     {
         if (!empty($this->request->get('id'))) {
