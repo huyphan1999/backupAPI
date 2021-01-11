@@ -1,9 +1,9 @@
 <?php
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 try {
-    (new Dotenv\Dotenv(__DIR__.'/../'))->load();
+    (new Dotenv\Dotenv(__DIR__ . '/../'))->load();
 } catch (Dotenv\Exception\InvalidPathException $e) {
     //
 }
@@ -20,7 +20,7 @@ try {
 */
 
 $app = new Laravel\Lumen\Application(
-    realpath(__DIR__.'/../')
+    realpath(__DIR__ . '/../')
 );
 
 config([
@@ -40,7 +40,7 @@ $app->withFacades();
 //mail
 
 //class_alias('Jenssegers\Mongodb\Eloquent\Model', 'mail');
- //$app->withEloquent();
+//$app->withEloquent();
 // class_alias('Jenssegers\Mongodb\Eloquent\Model', 'mail');
 // $app->withEloquent();
 
@@ -175,17 +175,18 @@ $app->singleton(Illuminate\Auth\AuthManager::class, function ($app) {
 */
 
 $app->group(['namespace' => 'App\Http\Controllers'], function ($app) {
-    require __DIR__.'/../routes/user.php';
-    require __DIR__.'/../routes/shop.php';
-    require __DIR__.'/../routes/student.php';
-    require __DIR__.'/../routes/branch.php';
-    require __DIR__.'/../routes/department.php';
-    require __DIR__.'/../routes/position.php';
-    require __DIR__.'/../routes/shift.php';
-    require __DIR__.'/../routes/empshift.php';
-    require __DIR__.'/../routes/empclock.php';
-    require __DIR__.'/../routes/salary.php';
-    require __DIR__.'/../routes/history.php';
+    require __DIR__ . '/../routes/user.php';
+    require __DIR__ . '/../routes/shop.php';
+    require __DIR__ . '/../routes/student.php';
+    require __DIR__ . '/../routes/branch.php';
+    require __DIR__ . '/../routes/department.php';
+    require __DIR__ . '/../routes/position.php';
+    require __DIR__ . '/../routes/shift.php';
+    require __DIR__ . '/../routes/empshift.php';
+    require __DIR__ . '/../routes/empclock.php';
+    require __DIR__ . '/../routes/salary.php';
+    require __DIR__ . '/../routes/history.php';
+    require __DIR__ . '/../routes/configClock.php';
 });
 
 return $app;

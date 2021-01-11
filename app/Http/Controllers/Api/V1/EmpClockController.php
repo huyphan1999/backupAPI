@@ -50,72 +50,6 @@ class EmpClockController extends Controller
         parent::__construct();
     }
 
-    //     public function TimeKeeping()
-    //     {
-    //         $user=$this->user();
-    //         $shift_id=$this->request->get('shift_id');
-    //         //Lấy thời gian lúc nhân viên bấm
-    //         $time=Carbon::now();
-    //         $shift=EmpShift::where(['shift_id'=>($shift_id),'user_id'=>($user->_id)])->first();
-    // //        $emp_clock=$this->empclockRepository->findWhere([
-    // //            'shift_id'=>mongo_id($shift_id),'user_id'=>mongo_id($user->_id)
-    // //        ])->first();
-    // //        dd($emp_clock);
-    // //        $emp_clock=EmpClock::where(['shift_id'=>($shift_id),'user_id'=>($user->_id)])->first();
-    //         switch($shift->clicked)
-    //         {
-    //             case 0:
-    //             {
-    //                 $attribute=[
-    //                     'user_id'=>$user->_id,
-    //                     'shift_id'=>$shift_id,
-    //                     'time_in'=>$time,
-    //                 ];
-    //                 $shift->clicked=1;
-    //                 $shift->save();
-    //                 $emp_clock=EmpClock::updateOrCreate([
-    //                     'user_id'=>$user->_id,
-    //                     'shift_id'=>$shift_id,
-    //                 ],[
-    //                     'time_in'=>$time,
-    //                 ]);
-    //                 break;
-    //             }
-    //             case 1:
-    //             {
-    //                 $attribute=[
-    //                     'user_id'=>$user->_id,
-    //                     'shift_id'=>$shift_id,
-    //                     'time_out'=>$time
-    //                 ];
-    //                 $emp_clock=EmpClock::updateOrCreate([
-    //                     'user_id'=>$user->_id,
-    //                     'shift_id'=>$shift_id,
-    //                 ],[
-    //                     'time_out'=>$time,
-    //                 ]);
-    //                 $shift->clicked=0;
-    //                 $shift->save();
-    //                 break;
-    //             }
-    //         }
-    //        if(!empty($emp_clock))
-    //        {
-    //            $emp_clock=$this->empclockRepository->create($attribute);
-    //        }
-    //        else{
-    //            $emp_clock=$this->empclockRepository->update($attribute,$user->_id);
-    //        }
-    //        $emp_clock=$this->empclockRepository->updateOrCreate($attribute,['user_id'=>$user->_id,'shift_id'=>$shift_id]);
-    //        $emp_clock=EmpClock::updateOrCreate([
-    //            'user_id'=>$user->_id,
-    //            'shift_id'=>$shift_id,
-    //        ],[
-    //           ''
-    //        ]);
-    //         return $this->successRequest($emp_clock);
-
-    //     }
 
     public function checkIn()
     {
@@ -188,6 +122,7 @@ class EmpClockController extends Controller
                 'user_id' => mongo_id($user->_id),
                 'shift_id' => mongo_id($shift_id),
                 'emp_shift_id' => mongo_id($emp_shift_id),
+                'shift_id' => mongo_id($shift_id),
                 'time_in' => $now,
                 'time_out' => null,
                 'status' => $status,
@@ -201,7 +136,7 @@ class EmpClockController extends Controller
                 'emp_shift_id' => mongo_id($emp_shift_id),
                 'shift_name' => $shift_name,
                 'shift_time' => $shift_time,
-                'emp_shift_id' => mongo_id($emp_shift_id),
+                'shift_id' => mongo_id($shift_id),
                 'time_check' => $now,
                 'status' => $status,
                 'type' => 'check_in'
@@ -225,9 +160,9 @@ class EmpClockController extends Controller
                 'user_name' => $user->name,
                 'working_date' => $working_date,
                 'emp_shift_id' => mongo_id($emp_shift_id),
+                'shift_id' => mongo_id($shift_id),
                 'shift_name' => $shift_name,
                 'shift_time' => $shift_time,
-                'emp_shift_id' => mongo_id($emp_shift_id),
                 'time_check' => $now,
                 'status' => $status,
                 'type' => 'check_out'
@@ -238,49 +173,4 @@ class EmpClockController extends Controller
         }
         return $this->successRequest($emp_clock->transform());
     }
-
-    //     public function TimeOut()
-    //     {
-    //         $user=$this->user();
-    //         $shift_id=$this->request->get('shift_id');
-    //         //Lấy thời gian lúc nhân viên bấm
-    //         $time=Carbon::now();
-    //         $empclock=EmpClock::where(['shift_id'=>($shift_id),'user_id'=>($user->_id),'time_out'=>NULL])->first();
-    // //        $emp_clock=$this->empclockRepository->findWhere([
-    // //            'shift_id'=>mongo_id($shift_id),'user_id'=>mongo_id($user->_id)
-    // //        ])->first();
-    // //        dd($emp_clock);
-    // //        $emp_clock=EmpClock::where(['shift_id'=>($shift_id),'user_id'=>($user->_id)])->first();
-
-    //         $attribute=[
-    //             'time_out'=>$time->toDateTimeString(),
-    //         ];
-    //         $emp_clock=$this->empclockRepository->update($attribute,$empclock->_id);
-    //         return $this->successRequest($emp_clock->transform());
-
-    //     }
-
-    //     public function Time()
-    //     {
-    //         $status=0;
-    //         $user=$this->user();
-    //         $shift_id=$this->request->get('shift_id');
-    //         //Lấy thời gian lúc nhân viên bấm
-    //         $time=Carbon::now();
-
-
-    //         $empclock=EmpClock::where(['shift_id'=>($shift_id),'user_id'=>($user->_id),'status'=>0])->first();
-    // //        $emp_clock=$this->empclockRepository->findWhere([
-    // //            'shift_id'=>mongo_id($shift_id),'user_id'=>mongo_id($user->_id)
-    // //        ])->first();
-    // //        dd($emp_clock);
-    // //        $emp_clock=EmpClock::where(['shift_id'=>($shift_id),'user_id'=>($user->_id)])->first();
-    //         if(!empty($empclock)){
-
-    //         }
-    //         $attribute=[
-    //         ];
-    //         $emp_clock=$this->empclockRepository->update($attribute,$empclock->_id);
-    //         return $this->successRequest($emp_clock->transform());
-    //     }
 }

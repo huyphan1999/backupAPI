@@ -20,7 +20,8 @@ class RepositoryServiceProvider extends ServiceProvider
             'Shift',
             'Empshift',
             'Salary',
-            'History'
+            'History',
+            'WifiConfig'
         );
 
         foreach ($models as $model) {

@@ -28,13 +28,16 @@ class HistoryTransformer extends TransformerAbstract
         } elseif ($status == 0) {
             $mean = "Ra ca";
         }
-        $shift_status = $mean . "-" . $s_name . " (" . $s_time . ") ";
+        $shift_status = $mean;
+
+        $shift = $model->shift();
         return [
             'date' => format_get_date($model->time_check, 'date'),
             'data' => [
                 'name' => $model->user_name,
                 'time' => format_get_date($model->time_check),
                 'activity' => $shift_status,
+                'shift' => $shift ? $shift->transform() : null
             ],
         ];
     }

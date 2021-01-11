@@ -8,13 +8,13 @@ use Moloquent\Eloquent\SoftDeletes;
 
 class EmpClock extends Moloquent
 {
-	use SoftDeletes;
+    use SoftDeletes;
 
-	protected $collection = 'employee_clocks';
+    protected $collection = 'employee_clocks';
 
     protected $guarded = [];
 
-    protected $hidden = ['created_at','updated_at','deleted_at'];
+    protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 
     protected $dates = [
         'time_in',
@@ -24,25 +24,26 @@ class EmpClock extends Moloquent
         'deleted_at'
     ];
 
-    public function transform($type='')
+    public function transform($type = '')
     {
         $transformer = new EmpClockTransformer();
 
-        return $transformer->transform($this,$type);
+        return $transformer->transform($this, $type);
     }
-    public function user() {
+    public function user()
+    {
         $user = null;
-        if(!empty($this->user_id)) {
+        if (!empty($this->user_id)) {
             $user = User::where(['_id' => mongo_id($this->user_id)])->first();
         }
         return $user;
     }
-    public function shift() {
+    public function shift()
+    {
         $shift = null;
-        if(!empty($this->shift_id)) {
+        if (!empty($this->shift_id)) {
             $shift = Shift::where(['_id' => mongo_id($this->shift_id)])->first();
         }
         return $shift;
     }
-
 }

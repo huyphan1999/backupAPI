@@ -35,6 +35,15 @@ class History extends Moloquent
         return $transformer->transform($this, $type);
     }
 
+    public function shift()
+    {
+        $shift = null;
+        if (!empty($this->shift_id)) {
+            $shop = Shift::where(['_id' => mongo_id($this->shift_id)])->first();
+        }
+        return $shift;
+    }
+
     // public function transformSelect()
     // {
     //     $transformer = new HistoryTransformer();
